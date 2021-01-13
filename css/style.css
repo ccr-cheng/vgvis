@@ -1,0 +1,130 @@
+@font-face {
+    font-family: 'Khand-Regular';
+    src: url('./font/Khand-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'KAITI';
+    src: url(./font/KAITI.ttf);
+}
+
+@font-face {
+    font-family: 'PingFangSC-Regular';
+    src: url(./font/PingFang-SC-Regular.ttf);
+}
+
+@media only screen and (min-width: 1080px) {
+    html {
+        font-size: 15px !important;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    html {
+        font-size: 25px !important;
+    }
+}
+
+@keyframes opacityChange {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+@-webkit-keyframes opacityChange {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+    overflow: hidden;
+}
+
+#container {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(240, 240, 240, 0.9);
+    overflow: hidden;
+    user-select: none;
+}
+
+.title {
+    font-size: 1.5rem;
+    text-anchor: middle;
+}
+
+.axis_label {
+    font-size: 1rem;
+    text-anchor: middle;
+}
+
+#tooltip {
+    position: absolute;
+    text-align: center;
+    background-color: rgba(250, 250, 250, 1);
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 5px;
+    font-size: 0.8rem;
+    width: 15rem;;
+    padding: 4px;
+    color: black;
+    z-index: 3;
+    visibility: hidden;
+    opacity: 0.8;
+}
+
+.choices select {
+    cursor: pointer;
+    width: 100px;
+    right: 0;
+}
+
+input {
+    cursor: pointer;
+    width: 100px;
+    right: 0;
+}
+
+.choices {
+    position: absolute;
+    top: 5%;
+    right: 0;
+    left: 85%;
+}
+
+.domain {
+    stroke: rgb(80, 80, 80);
+    stroke-linecap: round;
+    stroke-width: 0.13rem;
+}
+
+.tick line {
+    stroke: rgb(80, 80, 80);
+    stroke-linecap: round;
+}
+
+.slider {
+    padding: 5px 5px 5px 5px;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 55%;
+    height: 8%;
+    position: fixed;
+    bottom: 1%;
+    left: 22.5%;
+    opacity: 0;
+    border-radius: 10px;
+    box-shadow: 0px 6.4px 14.4px 0px rgba(0,0,0,.132),0px 1.2px 3.6px 0px rgba(0,0,0,.108);
+    margin: 0 auto;
+    transition: 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: opacityChange 1s;
+    -webkit-animation: opacityChange 1s;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+.slider:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
