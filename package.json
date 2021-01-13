@@ -1,7 +1,7 @@
 {
   "name": "vgvis",
   "version": "1.0.0",
-  "description": "运行方法：\r 1.安装node.js和anywhere，教程见https://www.jianshu.com/p/3f0b7ea9df53\r 2.打开cmd，在scatterplot文件夹下执行命令anywhere",
+  "description": "运行方法：\r 1.安装node.js和anywhere，教程见https://www.jianshu.com/p/3f0b7ea9df53\r 2.打开cmd，在vgvis文件夹下执行命令anywhere",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
