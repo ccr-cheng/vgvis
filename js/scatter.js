@@ -12,7 +12,7 @@ function draw_scatter() {
 
     // x axis - year
     let x = d3.scaleLinear()
-        .domain([1960, 2020])
+        .domain(year_range)
         .range([padding.left, width - padding.right]);
     let axis_x = d3.axisBottom()
         .scale(x)
