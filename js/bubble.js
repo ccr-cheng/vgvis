@@ -1,4 +1,5 @@
 function draw_bubble(filter_thres = 2.) {
+    let padding = {top: 20, bottom: 80};
     let svg = d3.select('.scatter')
         .append('svg')
         .attr('width', _width)
@@ -6,13 +7,19 @@ function draw_bubble(filter_thres = 2.) {
         .append('g');
     let nodes = vgdata.Game_data
         .filter(d => d['Year'] !== 'N/A' && +d['Global_Sales'] > filter_thres);
+    nodes.forEach(d => {
+        d.r = 5 * Math.sqrt(+d['Global_Sales']);
+        d.x = _width * Math.random();
+        d.y = _height * Math.random();
+    });
 
     let simulation = d3.forceSimulation(nodes)
-        .force('x', d3.forceX().strength(0.001))
-        .force('y', d3.forceY().strength(0.001))
-        .force('collide', d3.forceCollide().radius(d => 5 * Math.sqrt(+d['Global_Sales'])).iterations(3))
-        .force('charge', d3.forceManyBody().strength(1.))
-        .force('center', d3.forceCenter(width, height))
+        .velocityDecay(.2)
+        .force('x', d3.forceX().strength(0.01))
+        .force('y', d3.forceY().strength(0.01))
+        .force('collide', d3.forceCollide().radius(d => d.r).iterations(2))
+        .force('center', d3.forceCenter(width, height + (padding.top - padding.bottom) / 2))
+        .force('boundary', forceBoundary(-1000, padding.top, _width + 1000, _height - padding.bottom).strength(0.001))
         .on('tick', () => {
             node.attr('cx', d => d.x)
                 .attr('cy', d => d.y);
@@ -31,7 +38,7 @@ function draw_bubble(filter_thres = 2.) {
         }
 
         function dragended(event) {
-            if (!event.active) simulation.alphaTarget(0);
+            if (!event.active) simulation.alphaTarget(0.1);
             event.subject.fx = null;
             event.subject.fy = null;
         }
@@ -52,7 +59,7 @@ function draw_bubble(filter_thres = 2.) {
         .style('fill', 'rgba(80, 80, 80, .2)')
         .attr('cx', width)
         .attr('cy', height)
-        .attr('r', d => 5 * Math.sqrt(d['Global_Sales']))
+        .attr('r', d => d.r)
         .call(drag(simulation))
         .on('mouseover', (e, d) => {
             // show a tooltip
