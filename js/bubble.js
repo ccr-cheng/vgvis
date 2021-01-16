@@ -5,7 +5,7 @@ function draw_bubble(filter_thres = 2.) {
         .attr('height', _height)
         .append('g');
     let padding = {
-        top: .05 * _height, bottom: .15 * _height,
+        top: .02 * _height, bottom: .12 * _height,
         left: .05 * _width, right: .1 * _width
     };
     let cur_range = year_range;
@@ -17,16 +17,17 @@ function draw_bubble(filter_thres = 2.) {
     nodes.forEach(d => {
         d.r = 5 * Math.sqrt(+d['Global_Sales']);
         d.x = get_x(d['Year']);
-        d.y = _height * Math.random();
+        d.y = _height * 0.4 + _height * 0.1 * Math.random();
     });
 
     let simulation = d3.forceSimulation(nodes)
-        .velocityDecay(.1)
-        .force('x', d3.forceX(d => get_x(+d['Year'])).strength(0.01))
-        .force('y', d3.forceY(height + (padding.top - padding.bottom) / 2).strength(0.01))
+        .velocityDecay(.2)
+        .force('x', d3.forceX(d => get_x(+d['Year'])).strength(0.1))
+        .force('y', d3.forceY(height + (padding.top - padding.bottom) / 2).strength(0.02))
         .force('collide', d3.forceCollide().radius(d => d.r).iterations(2))
         // .force('center', d3.forceCenter(width, height + (padding.top - padding.bottom) / 2))
-        .force('boundary', forceBoundary(-1000, padding.top, _width + 1000, _height - padding.bottom).strength(0.001))
+        .force('boundary', forceBoundary(0, padding.top,
+            _width, _height - padding.bottom).strength(0.001))
         .on('tick', () => {
             node.attr('cx', d => d.x)
                 .attr('cy', d => d.y);
