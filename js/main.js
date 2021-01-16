@@ -45,8 +45,9 @@ function main() {
         for (let attr in vgdata)
             console.log(attr);
         setTimeSlider();
-        draw_SGB();
-        draw_scatter();
+        // draw_SGB();
+        // draw_scatter();
+        draw_bubble();
     });
 
 }
