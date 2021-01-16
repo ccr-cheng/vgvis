@@ -1,10 +1,12 @@
+let year_range = [1980, 2016];
 
 /*
 function name: refresh
 function usage: after changing the time scale, it will be called to redraw the graphs
 */
 function refresh() {
-    let TimeRange = getTimeRange();
+    year_range = getTimeRange();
+    // console.log(year_range);
 }
 
 /*
@@ -14,7 +16,7 @@ function usage: set the TimeSlider on the bottom, style in style.css
 function setTimeSlider() {
     $('.range-slider').jRange({
         from: 1980,
-        to: 2020,
+        to: 2016,
         step: 1,
         scale: [1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020],
         format: '%s',
@@ -24,7 +26,7 @@ function setTimeSlider() {
         theme: "theme-blue",
         ondragend: refresh // after moving the bottom, call the function
     });
-    $('.range-slider').jRange('setValue', '1960, 2020'); // set initial value for the slider
+    $('.range-slider').jRange('setValue', '1980, 2016'); // set initial value for the slider
 }
 
 /*

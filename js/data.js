@@ -8,7 +8,6 @@ let vgdata = {
     aggr_fields: ['NA_Sales', 'EU_Sales', 'JP_Sales', 'Other_Sales', 'Global_Sales'],
 };
 const vgdata_file = './data/vgsales.csv';
-const year_range = [1980, 2016];
 
 const platforms = [
     "Wii", "NES", "GB", "DS", "X360", "PS3", "PS2", "SNES",
@@ -61,7 +60,7 @@ function aggregate(data, group) {
 
 function proc_data(data) {
     vgdata['Game_data'] = data.filter(d => d['Year'] !== 'N/A' &&
-        +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1]);
+        +d['Year'] >= 1980 && +d['Year'] <= 2016);
     for (let group of vgdata.aggr_groups) {
         aggregate(data, group)
     }

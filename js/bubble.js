@@ -1,4 +1,4 @@
-function draw_bubble(filter_thres = 2.) {
+function draw_bubble(max_node = 800) {
     let svg = d3.select('.scatter')
         .append('svg')
         .attr('width', _width)
@@ -8,12 +8,14 @@ function draw_bubble(filter_thres = 2.) {
         top: .02 * _height, bottom: .12 * _height,
         left: .05 * _width, right: .1 * _width
     };
-    let cur_range = year_range;
     let x_interp = d3.interpolate(padding.left, _width - padding.right);
-    let get_year_ratio = year => (year - cur_range[0]) / (cur_range[1] - cur_range[0]);
+    let get_year_ratio = year => (year - year_range[0]) / (year_range[1] - year_range[0]);
     let get_x = year => x_interp(get_year_ratio(year));
 
-    let nodes = vgdata.Game_data.filter(d => +d['Global_Sales'] > filter_thres);
+    let data = vgdata.Game_data.filter(
+        d => +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1]
+    );
+    let nodes = data.slice(0, Math.min(max_node, data.length));
     nodes.forEach(d => {
         d.r = 5 * Math.sqrt(+d['Global_Sales']);
         d.x = get_x(d['Year']);
@@ -27,7 +29,7 @@ function draw_bubble(filter_thres = 2.) {
         .force('collide', d3.forceCollide().radius(d => d.r).iterations(2))
         // .force('center', d3.forceCenter(width, height + (padding.top - padding.bottom) / 2))
         .force('boundary', forceBoundary(0, padding.top,
-            _width, _height - padding.bottom).strength(0.001))
+            _width, _height - padding.bottom).strength(0.005))
         .on('tick', () => {
             node.attr('cx', d => d.x)
                 .attr('cy', d => d.y);
@@ -58,7 +60,7 @@ function draw_bubble(filter_thres = 2.) {
     };
 
     let node = svg.append('g')
-        .attr("stroke", "#fff")
+        .attr("stroke", "rgba(240, 240, 240, .5)")
         .attr("stroke-width", 0.5)
         .selectAll('circle')
         .data(nodes)
@@ -91,4 +93,22 @@ function draw_bubble(filter_thres = 2.) {
             let tooltip = d3.select('#tooltip');
             tooltip.style('visibility', 'hidden');
         });
+
+    // x axis
+    let update_x_axis = () => {
+        let x = d3.scaleLinear()
+            .domain(year_range)
+            .range([padding.left, _width - padding.right]);
+        let axis_x = d3.axisBottom()
+            .scale(x)
+            .tickFormat(d => d);
+        return [x, axis_x]
+    };
+    [x, axis_x] = update_x_axis(y_attr);
+
+    let x_axis = svg.append('g')
+        .attr('transform', `translate(0, ${height})`)
+        .call(axis_x)
+        .attr('font-family', fontFamily)
+        .attr('font-size', '1rem');
 }
