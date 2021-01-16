@@ -1,7 +1,7 @@
-let _width = $(window).width();
-let _height = $(window).height();
-let width = 0.5 * _width;
-let height = 0.5 * _height;
+const _width = $(window).width();
+const _height = $(window).height();
+const width = 0.5 * _width;
+const height = 0.5 * _height;
 
 function set_ui() {
     // 设置字体
@@ -13,7 +13,6 @@ function set_ui() {
     d3.select("body")
         .style("font-family", fontFamily);
 }
-
 
 
 function main() {
@@ -46,6 +45,8 @@ function main() {
         for (let attr in vgdata)
             console.log(attr);
         setTimeSlider();
+        draw_SGB();
+        draw_scatter();
     });
 
 }

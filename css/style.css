@@ -66,7 +66,7 @@ html, body {
     border: 1px solid rgb(200, 200, 200);
     border-radius: 5px;
     font-size: 0.8rem;
-    width: 15rem;;
+    /*width: 15rem;*/
     padding: 4px;
     color: black;
     z-index: 3;

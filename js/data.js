@@ -1,5 +1,24 @@
-let vgdata = {};
+let vgdata = {
+    Game_data: null,
+    Platform_data: null, Platform2idx: null,
+    Year_data: null, Year2idx: null,
+    Genre_data: null, Genre2idx: null,
+    Publisher_data: null, Publisher2idx: null,
+    aggr_groups: ['Platform', 'Year', 'Genre', 'Publisher'],
+    aggr_fields: ['NA_Sales', 'EU_Sales', 'JP_Sales', 'Other_Sales', 'Global_Sales'],
+};
 let vgdata_file = './data/vgsales.csv';
+
+const platforms = [
+    "Wii", "NES", "GB", "DS", "X360", "PS3", "PS2", "SNES",
+    "GBA", "3DS", "PS4", "N64", "PS", "XB", "PC", "2600",
+    "PSP", "XOne", "GC", "WiiU", "GEN", "DC", "PSV", "SAT",
+    "SCD", "WS", "NG", "TG16", "3DO", "GG", "PCFX"
+];
+const genres = [
+    "Sports", "Platform", "Racing", "Role-Playing", "Puzzle", "Misc",
+    "Shooter", "Simulation", "Action", "Fighting", "Adventure", "Strategy"
+];
 
 
 function get_min_max(data, attr) {
@@ -40,8 +59,6 @@ function aggregate(data, group) {
 }
 
 function proc_data(data) {
-    vgdata.aggr_groups = ['Platform', 'Year', 'Genre', 'Publisher'];
-    vgdata.aggr_fields = ['NA_Sales', 'EU_Sales', 'JP_Sales', 'Other_Sales', 'Global_Sales'];
     vgdata['Game_data'] = data;
     for (let group of vgdata.aggr_groups) {
         aggregate(data, group)
