@@ -2,6 +2,7 @@ const _width = $(window).width();
 const _height = $(window).height();
 const width = 0.5 * _width;
 const height = 0.5 * _height;
+let callbacks = [];
 
 function set_ui() {
     // 设置字体
@@ -47,7 +48,7 @@ function main() {
         setTimeSlider();
         // draw_SGB();
         // draw_scatter();
-        draw_bubble();
+        callbacks.push(draw_bubble());
     });
 
 }

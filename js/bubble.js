@@ -9,8 +9,10 @@ function draw_bubble(max_node = 800) {
         left: .05 * _width, right: .1 * _width
     };
     let x_interp = d3.interpolate(padding.left, _width - padding.right);
-    let get_year_ratio = year => (year - year_range[0]) / (year_range[1] - year_range[0]);
-    let get_x = year => x_interp(get_year_ratio(year));
+    let get_x = y_range => {
+        let get_year_ratio = year => (year - y_range[0]) / (y_range[1] - y_range[0]);
+        return year => x_interp(get_year_ratio(year))
+    };
 
     let data = vgdata.Game_data.filter(
         d => +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1]
@@ -18,22 +20,17 @@ function draw_bubble(max_node = 800) {
     let nodes = data.slice(0, Math.min(max_node, data.length));
     nodes.forEach(d => {
         d.r = 5 * Math.sqrt(+d['Global_Sales']);
-        d.x = get_x(d['Year']);
+        d.x = get_x(year_range)(d['Year']);
         d.y = _height * 0.4 + _height * 0.1 * Math.random();
     });
 
     let simulation = d3.forceSimulation(nodes)
         .velocityDecay(.2)
-        .force('x', d3.forceX(d => get_x(+d['Year'])).strength(0.1))
+        .force('x', d3.forceX(d => get_x(year_range)(d['Year'])).strength(0.1))
         .force('y', d3.forceY(height + (padding.top - padding.bottom) / 2).strength(0.02))
-        .force('collide', d3.forceCollide().radius(d => d.r).iterations(2))
-        // .force('center', d3.forceCenter(width, height + (padding.top - padding.bottom) / 2))
-        .force('boundary', forceBoundary(0, padding.top,
-            _width, _height - padding.bottom).strength(0.005))
-        .on('tick', () => {
-            node.attr('cx', d => d.x)
-                .attr('cy', d => d.y);
-        });
+        // .force('boundary', forceBoundary(0, padding.top,
+        //     _width, _height - padding.bottom).strength(0.005))
+        .force('collide', d3.forceCollide().radius(d => d.r).iterations(2));
 
     let drag = simulation => {
         function dragstarted(event) {
@@ -66,9 +63,9 @@ function draw_bubble(max_node = 800) {
         .data(nodes)
         .enter().append('circle')
         .attr('class', 'point')
-        .style('fill', d => d3.interpolateSpectral(get_year_ratio(+d['Year'])))
-        .attr('cx', width)
-        .attr('cy', height)
+        .style('fill', d => d3.interpolateSpectral((d['Year'] - 1980) / (2016 - 1980)))
+        .attr('cx', d => d.x)
+        .attr('cy', d => d.y)
         .attr('r', d => d.r)
         .call(drag(simulation))
         .on('mouseover', (e, d) => {
@@ -94,21 +91,34 @@ function draw_bubble(max_node = 800) {
             tooltip.style('visibility', 'hidden');
         });
 
+    simulation.on('tick', () => {
+        node.attr('cx', d => d.x)
+            .attr('cy', d => d.y);
+    });
+
     // x axis
     let update_x_axis = () => {
         let x = d3.scaleLinear()
             .domain(year_range)
             .range([padding.left, _width - padding.right]);
-        let axis_x = d3.axisBottom()
+        return d3.axisBottom()
             .scale(x)
-            .tickFormat(d => d);
-        return [x, axis_x]
+            .tickFormat(d => d)
     };
-    [x, axis_x] = update_x_axis(y_attr);
+    let axis_x = update_x_axis();
 
     let x_axis = svg.append('g')
         .attr('transform', `translate(0, ${height})`)
         .call(axis_x)
         .attr('font-family', fontFamily)
         .attr('font-size', '1rem');
+    return () => {
+        let new_axis_x = update_x_axis();
+        x_axis.transition()
+            .duration(1000)
+            .call(new_axis_x);
+        simulation
+            .force('x', d3.forceX(d => get_x(year_range)(d['Year'])).strength(0.1))
+            .alpha(1).restart();
+    }
 }
