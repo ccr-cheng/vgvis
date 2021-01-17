@@ -129,3 +129,8 @@ input {
 .slider:hover {
     background-color: rgba(255, 255, 255, 1);
 }
+
+.node {
+	stroke: white;
+	stroke-width: 1px;
+}

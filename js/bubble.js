@@ -1,5 +1,5 @@
 function draw_bubble(max_node = 800) {
-    let svg = d3.select('.scatter')
+    let svg = d3.select('.bubble')
         .append('svg')
         .attr('width', _width)
         .attr('height', _height)
@@ -9,24 +9,24 @@ function draw_bubble(max_node = 800) {
         left: .05 * _width, right: .1 * _width
     };
     let x_interp = d3.interpolate(padding.left, _width - padding.right);
-    let get_x = y_range => {
-        let get_year_ratio = year => (year - y_range[0]) / (y_range[1] - y_range[0]);
-        return year => x_interp(get_year_ratio(year))
+    let get_x = year => {
+        return x_interp((year - year_range[0]) / (year_range[1] - year_range[0]))
+    };
+    let filter_year = d => +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1];
+    let initialize = d => {
+        d.r = 5 * Math.sqrt(+d['Global_Sales']);
+        d.x = get_x(d['Year']);
+        d.y = _height * 0.4 + _height * 0.1 * Math.random();
+        return d;
     };
 
-    let data = vgdata.Game_data.filter(
-        d => +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1]
-    );
+    let data = vgdata.Game_data.filter(d => filter_year(d));
     let nodes = data.slice(0, Math.min(max_node, data.length));
-    nodes.forEach(d => {
-        d.r = 5 * Math.sqrt(+d['Global_Sales']);
-        d.x = get_x(year_range)(d['Year']);
-        d.y = _height * 0.4 + _height * 0.1 * Math.random();
-    });
+    nodes.map(d => initialize(d));
 
     let simulation = d3.forceSimulation(nodes)
         .velocityDecay(.2)
-        .force('x', d3.forceX(d => get_x(year_range)(d['Year'])).strength(0.1))
+        .force('x', d3.forceX(d => get_x(d['Year'])).strength(0.1))
         .force('y', d3.forceY(height + (padding.top - padding.bottom) / 2).strength(0.02))
         // .force('boundary', forceBoundary(0, padding.top,
         //     _width, _height - padding.bottom).strength(0.005))
@@ -57,12 +57,9 @@ function draw_bubble(max_node = 800) {
     };
 
     let node = svg.append('g')
-        .attr("stroke", "rgba(240, 240, 240, .5)")
-        .attr("stroke-width", 0.5)
         .selectAll('circle')
         .data(nodes)
-        .enter().append('circle')
-        .attr('class', 'point')
+        .join('circle')
         .style('fill', d => d3.interpolateSpectral((d['Year'] - 1980) / (2016 - 1980)))
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
@@ -91,10 +88,11 @@ function draw_bubble(max_node = 800) {
             tooltip.style('visibility', 'hidden');
         });
 
-    simulation.on('tick', () => {
+    let ticked = () => {
         node.attr('cx', d => d.x)
             .attr('cy', d => d.y);
-    });
+    };
+    simulation.on('tick', ticked);
 
     // x axis
     let update_x_axis = () => {
@@ -113,12 +111,31 @@ function draw_bubble(max_node = 800) {
         .attr('font-family', fontFamily)
         .attr('font-size', '1rem');
     return () => {
+        // update axis
         let new_axis_x = update_x_axis();
         x_axis.transition()
             .duration(1000)
             .call(new_axis_x);
-        simulation
-            .force('x', d3.forceX(d => get_x(year_range)(d['Year'])).strength(0.1))
+
+        // update data
+        let old = node.data().filter(d => filter_year(d));
+        let old_map = new Map(old.map(d => [d['Rank'], d]));
+        nodes = vgdata.Game_data
+            .filter(d => filter_year(d))
+            .map(d => old_map.get(d['Rank']) || initialize(d));
+        nodes = nodes.slice(0, Math.min(max_node, nodes.length));
+
+        // update nodes
+        node = node.data(nodes)
+            .join('circle')
+            .style('fill', d => d3.interpolateSpectral((d['Year'] - 1980) / (2016 - 1980)))
+            .attr('cx', d => d.x)
+            .attr('cy', d => d.y)
+            .attr('r', d => d.r)
+            .call(drag(simulation));
+
+        simulation.nodes(nodes)
+            .on('tick', ticked)
             .alpha(1).restart();
     }
 }
