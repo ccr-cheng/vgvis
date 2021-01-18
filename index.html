@@ -24,7 +24,7 @@
         <input class="range-slider" type="hidden" value="1960,2020" style="margin: 0 auto; text-align: center;">
     </div>
     <div class="selector" style="text-align: left;">
-            <select class="selectpicker" id="SalesType" data-live-search="true"  data-size="5" data-width="7.5%" title="Sales">
+            <select class="selectpicker" id="SalesType" data-live-search="true"  data-size="5" data-width="7.5%" title="Sales" onchange="SaleTypeSelector(this)">
                 <option value="Global_Sales">Global Sales</option>
                 <option value="NA_Sales">NA Sales</option>
                 <option value="EU_Sales">EU Sales</option>
@@ -48,6 +48,7 @@
 <script src="js/TimeSlider.js"></script>
 <script src="js/stack-grouped-bars.js"></script>
 <script src="js/scatter.js"></script>
+<script src="js/Multi-Selector.js"></script>
 <script src="js/main.js"></script>
 <script src="js/bubble.js"></script>
 </body>

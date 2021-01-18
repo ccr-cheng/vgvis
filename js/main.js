@@ -2,6 +2,7 @@ const _width = $(window).width();
 const _height = $(window).height();
 const width = 0.5 * _width;
 const height = 0.5 * _height;
+let cur_sale = 'Global_Sales';
 let callbacks = [];
 
 function set_ui() {
