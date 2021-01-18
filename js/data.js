@@ -20,6 +20,7 @@ const genres = [
     "Shooter", "Simulation", "Action", "Fighting", "Adventure", "Strategy"
 ];
 
+const publishers = [];
 
 function get_min_max(data, attr) {
     let min = 1e9;
@@ -63,5 +64,9 @@ function proc_data(data) {
         +d['Year'] >= 1980 && +d['Year'] <= 2016);
     for (let group of vgdata.aggr_groups) {
         aggregate(data, group)
+    }
+    //generate publisher list
+    for (let data of vgdata.Publisher_data) {
+        publishers.push(data['g_name']);
     }
 }

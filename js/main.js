@@ -3,6 +3,8 @@ const _height = $(window).height();
 const width = 0.5 * _width;
 const height = 0.5 * _height;
 let cur_sale = 'Global_Sales';
+let cur_attribute_type = 'none';
+let cur_attribute_value = new Set();
 let callbacks = [];
 
 function set_ui() {
@@ -46,7 +48,7 @@ function main() {
         for (let attr in vgdata)
             console.log(attr);
         setTimeSlider();
-        // callbacks.push(draw_SGB());
+        callbacks.push(draw_SGB());
         // draw_scatter();
         // callbacks.push(draw_bubble());
     });

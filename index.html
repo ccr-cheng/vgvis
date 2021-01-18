@@ -31,12 +31,12 @@
                 <option value="JP_Sales">JP Sales</option>
                 <option value="Other_Sales">Other Sales</option>
             </select>
-            <select class="selectpicker" id="AttributeType" data-live-search="true" data-size="5" data-width="12.5%" title="Attribute Type">
+            <select class="selectpicker" id="AttributeType" data-live-search="true" data-size="5" data-width="12.5%" title="Attribute Type" onchange="AttributeTypeSelector(this)">
                 <option value="Platform">Platform</option>
                 <option value="Genre">Genre</option>
                 <option value="Publisher">Publisher</option>
             </select>
-            <select class="selectpicker" id="AttributeValue" data-live-search="true"  data-size="5" data-width="20%" title="Attribute Value" multiple>
+            <select class="selectpicker" id="AttributeValue" data-live-search="true"  data-size="5" data-width="20%" title="Attribute Value" multiple onchange="AttributeValueSelector(this)">
             </select>
     </div>
     <div class="stack-grouped-bar"></div>
