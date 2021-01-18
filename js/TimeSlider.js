@@ -20,7 +20,7 @@ function setTimeSlider() {
         from: 1980,
         to: 2016,
         step: 1,
-        scale: [1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020],
+        scale: [1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2016],
         format: '%s',
         width: $(window).width() * 0.85, // width of slider
         showLabels: true,

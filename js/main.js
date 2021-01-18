@@ -18,7 +18,6 @@ function set_ui() {
 
 function main() {
     set_ui();
-
     // change this if you want to filter data
     let filter_func = () => true;
     d3.csv(vgdata_file).then(data => {
@@ -46,7 +45,7 @@ function main() {
         for (let attr in vgdata)
             console.log(attr);
         setTimeSlider();
-        // draw_SGB();
+        // callbacks.push(draw_SGB());
         // draw_scatter();
         callbacks.push(draw_bubble());
     });

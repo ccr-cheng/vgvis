@@ -6,10 +6,15 @@
     <script src="js/d3.v6.min.js"></script>
     <script src="js/jquery.range.js"></script>
     <script src="js/d3-force-boundary.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-select.min.js"></script>
 
     <link rel="stylesheet" href="css/w3.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/jquery.range.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/bootstrap-select.min.css">
 </head>
 
 <body>
@@ -17,6 +22,15 @@
     <div id='tooltip'></div>
     <div class="slider">
         <input class="range-slider" type="hidden" value="1960,2020" style="margin: 0 auto; text-align: center;">
+    </div>
+    <div class="selector" style="text-align: left;">
+            <select class="selectpicker" id="AttributeType" data-live-search="true" data-size="5" data-width="12.5%" title="Attribute Type">
+                <option value="Platform">Platform</option>
+                <option value="Genre">Genre</option>
+                <option value="Publisher">Publisher</option>
+            </select>
+            <select class="selectpicker" id="AttributeValue" data-live-search="true"  data-size="5" data-width="20%" title="Attribute Value" multiple>
+            </select>
     </div>
     <div class="stack-grouped-bar"></div>
     <div class="scatter"></div>

@@ -106,6 +106,28 @@ input {
     stroke-linecap: round;
 }
 
+.selector {
+    padding: 5px 5px 5px 5px;
+    background-color: rgba(255, 255, 255, 0);
+    width: 80%;
+    height: 8%;
+    position: fixed;
+    top: 1%;
+    left: 1%;
+    opacity: 0;
+    border-radius: 10px;
+    /*box-shadow: 0px 6.4px 14.4px 0px rgba(0, 0, 0, .132), 0px 1.2px 3.6px 0px rgba(0, 0, 0, .108);*/
+    margin: 0 auto;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    animation: opacityChange 1s;
+    -webkit-animation: opacityChange 1s;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+
+
 .slider {
     padding: 5px 5px 5px 5px;
     background-color: rgba(255, 255, 255, 0.7);
