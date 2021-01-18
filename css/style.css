@@ -26,12 +26,21 @@
 }
 
 @keyframes opacityChange {
-    from {opacity: 0;}
-    to {opacity: 1;}
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
+
 @-webkit-keyframes opacityChange {
-    from {opacity: 0;}
-    to {opacity: 1;}
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 html, body {
@@ -75,10 +84,8 @@ html, body {
     opacity: 0.8;
 }
 
-.choices select {
-    cursor: pointer;
-    width: 100px;
-    right: 0;
+label {
+    color: white;
 }
 
 input {
@@ -87,12 +94,6 @@ input {
     right: 0;
 }
 
-.choices {
-    position: absolute;
-    top: 5%;
-    right: 0;
-    left: 85%;
-}
 
 .domain {
     stroke: rgb(80, 80, 80);
@@ -115,7 +116,7 @@ input {
     left: 10%;
     opacity: 0;
     border-radius: 10px;
-    box-shadow: 0px 6.4px 14.4px 0px rgba(0,0,0,.132),0px 1.2px 3.6px 0px rgba(0,0,0,.108);
+    box-shadow: 0px 6.4px 14.4px 0px rgba(0, 0, 0, .132), 0px 1.2px 3.6px 0px rgba(0, 0, 0, .108);
     margin: 0 auto;
     transition: 0.3s;
     display: flex;
@@ -126,11 +127,12 @@ input {
     animation-fill-mode: forwards;
     -webkit-animation-fill-mode: forwards;
 }
+
 .slider:hover {
     background-color: rgba(255, 255, 255, 1);
 }
 
 .node {
-	stroke: white;
-	stroke-width: 1px;
+    stroke: white;
+    stroke-width: 1px;
 }

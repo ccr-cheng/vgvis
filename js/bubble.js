@@ -4,6 +4,7 @@ function draw_bubble(max_node = 800) {
         .attr('width', _width)
         .attr('height', _height)
         .append('g');
+    let cur_sale = 'Global_Sales';
     let padding = {
         top: .02 * _height, bottom: .12 * _height,
         left: .05 * _width, right: .1 * _width
@@ -14,7 +15,7 @@ function draw_bubble(max_node = 800) {
     };
     let filter_year = d => +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1];
     let initialize = d => {
-        d.r = 5 * Math.sqrt(+d['Global_Sales']);
+        d.r = 5 * Math.sqrt(+d[cur_sale]);
         d.x = get_x(d['Year']);
         d.y = _height * 0.4 + _height * 0.1 * Math.random();
         return d;
@@ -110,6 +111,27 @@ function draw_bubble(max_node = 800) {
         .call(axis_x)
         .attr('font-family', fontFamily)
         .attr('font-size', '1rem');
+
+    // sale selector
+    svg.append('foreignObject')
+        .attr('height', 25)
+        .attr('width', 100)
+        .append('xhtml:div')
+        .append('select')
+        .on('change', function () {
+            cur_sale = this.value;
+            nodes.forEach(d => d.r = 5 * Math.sqrt(+d[cur_sale]));
+            node.transition()
+                .duration(1000)
+                .attr('r', d => 5 * Math.sqrt(+d[cur_sale]));
+            simulation.force('collide', d3.forceCollide().radius(d => d.r).iterations(2));
+        })
+        .selectAll('option')
+        .data(vgdata.aggr_fields)
+        .join('option')
+        .attr('value', d => d)
+        .text(d => d);
+
     return () => {
         // update axis
         let new_axis_x = update_x_axis();
