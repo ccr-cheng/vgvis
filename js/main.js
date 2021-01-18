@@ -47,7 +47,7 @@ function main() {
         setTimeSlider();
         // callbacks.push(draw_SGB());
         // draw_scatter();
-        callbacks.push(draw_bubble());
+        // callbacks.push(draw_bubble());
     });
 
 }
