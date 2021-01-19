@@ -72,3 +72,29 @@ function proc_data(data) {
         publishers.push(data['g_name']);
     }
 }
+
+function data_update() {
+    d3.csv(vgdata_file).then(data => {
+        data = data.filter(() => true);
+        data.forEach((d, i) => d.id = i);
+        data = data.filter(d => d['Year'] !== 'N/A' && +d['Year'] >= 1980 && +d['Year'] <= 2016);
+        if(cur_attribute_type != 'none')
+        {
+            if(!cur_attribute_value.has('All'))
+                data = data.filter(d => cur_attribute_value.has(d[cur_attribute_type]));
+        }
+        aggregate(data, 'Year');
+        data = data.filter(d => {
+            return d['Year'] >= year_range[0] && d['Year'] <= year_range[1]
+        });
+        vgdata['Game_data'] = data;
+        for (let group of vgdata.aggr_groups) {
+            if (group == 'Year') continue;
+            aggregate(data, group);
+        }
+        //generate publisher list
+        for (let data of vgdata.Publisher_data) {
+            publishers.push(data['g_name']);
+        }
+    })
+}
