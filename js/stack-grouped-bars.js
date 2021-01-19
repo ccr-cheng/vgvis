@@ -16,8 +16,8 @@ function draw_SGB() {
     let XRange = [];
     for (let i = year_range[0]; i <= year_range[1]; i++)
         XRange.push(i);
-    console.log(vgdata.aggregate('Year', d => filter_attr(d)));
-    let YearData = vgdata.aggregate('Year', d => filter_attr(d)).filter(d => d['g_name'] >= year_range[0] && d['g_name'] <= year_range[1]);
+    console.log(vgdata.aggregate('Year', filter_attr));
+    let YearData = vgdata.aggregate('Year', filter_attr).filter(d => d['g_name'] >= year_range[0] && d['g_name'] <= year_range[1]);
     YearData.sort(function (a, b) {
         let v1 = parseInt(a['g_name']);
         let v2 = parseInt(b['g_name']);
@@ -118,7 +118,7 @@ function draw_SGB() {
     }
     return () => {
         //data update
-        YearData = vgdata.aggregate('Year', d => filter_attr(d)).filter(d => d['g_name'] >= year_range[0] && d['g_name'] <= year_range[1]);
+        YearData = vgdata.aggregate('Year', filter_attr).filter(d => d['g_name'] >= year_range[0] && d['g_name'] <= year_range[1]);
         for(let i = 1980; i <= 2016; i++)
         {
             let flag = 1;
