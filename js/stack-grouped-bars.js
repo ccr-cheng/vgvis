@@ -2,7 +2,6 @@
 
 */
 let bar_layout = 'grouped';
-let bar_refresh = null;
 
 function draw_SGB() {
     let svg = d3.select('.stack-grouped-bar')
@@ -17,9 +16,16 @@ function draw_SGB() {
     let XRange = [];
     for (let i = year_range[0]; i <= year_range[1]; i++)
         XRange.push(i);
-    let stackData = vgdata.aggregate('Year', filter_year);
+    console.log(vgdata.aggregate('Year', d => filter_attr(d)));
+    let YearData = vgdata.aggregate('Year', d => filter_attr(d)).filter(d => d['g_name'] >= year_range[0] && d['g_name'] <= year_range[1]);
+    YearData.sort(function (a, b) {
+        let v1 = parseInt(a['g_name']);
+        let v2 = parseInt(b['g_name']);
+        return v1 - v2;
+    });
+    let stackData = YearData;
     let groupedData = [];
-    for (let i of keys_alphabet) {
+    for(let i of keys_alphabet) {
         let array = [];
         for (let j of stackData) {
             array.push(j[i]);
@@ -46,7 +52,7 @@ function draw_SGB() {
             .scale(y_scale)
             .ticks()
             .tickFormat(d => d);
-    };
+    }
     let x_scale = d3.scaleBand()
         .domain(XRange)
         .rangeRound([padding.left, _width - padding.right])
@@ -73,7 +79,7 @@ function draw_SGB() {
         .data(d => d)
         .join('rect')
         .attr('x', (d, i) => x_scale(XRange[i]))
-        .attr('y', d => y_scale(d[1]))
+        .attr('y', (d, i) => y_scale(d[1]))
         .attr('height', d => y_scale(d[0]) - y_scale(d[1]))
         .attr('width', x_scale.bandwidth());
     let y_axis = svg.append('g')
@@ -89,7 +95,7 @@ function draw_SGB() {
 
     function transitionGrouped() {
         rect.transition()
-            .duration(1000)
+            .duration(700)
             .delay((d, i) => i * 20)
             .attr('x', (d, i) => {
                 return x_scale(XRange[i]) + x_scale.bandwidth() / keys_alphabet.length * d[2];
@@ -99,10 +105,9 @@ function draw_SGB() {
             .attr('y', d => y_scale(d[1] - d[0]))
             .attr('height', d => y_scale(0) - y_scale(d[1] - d[0]));
     }
-
     function transitionStacked() {
         rect.transition()
-            .duration(1000)
+            .duration(700)
             .delay((d, i) => i * 20)
             .attr('y', d => y_scale(d[1]))
             .attr('height', d => y_scale(d[0]) - y_scale(d[1])
@@ -111,13 +116,52 @@ function draw_SGB() {
             .attr('x', (d, i) => x_scale(XRange[i]))
             .attr('width', x_scale.bandwidth());
     }
-
     return () => {
-        // data update
-        stackData = vgdata.aggregate('Year', filter_attr);
+        //data update
+        YearData = vgdata.aggregate('Year', d => filter_attr(d)).filter(d => d['g_name'] >= year_range[0] && d['g_name'] <= year_range[1]);
+        for(let i = 1980; i <= 2016; i++)
+        {
+            let flag = 1;
+            for (let j = 0; j < YearData.length; j++)
+                if(parseInt(YearData[j].g_name) == i)
+                {
+                    flag = 0;
+                    break;
+                }
+            if(flag)
+            {
+                let year = {};
+                year.id = YearData.length;
+                year.g_name = i.toString();
+                year.NA_Sales = 0;
+                year.count = 0;
+                year.Global_Sales = 0;
+                year.JP_Sales = 0;
+                year.EU_Sales = 0;
+                year.Other_Sales = 0;
+                YearData.push(year);
+            }
+        }
+        YearData.sort(function (a, b) {
+            let v1 = parseInt(a['g_name']);
+            let v2 = parseInt(b['g_name']);
+            return v1 - v2;
+        });
+        stackData = stack(YearData);
+        for (let i = 0; i < stackData.length; i++) {
+            for (let j of stackData[i]) {
+                j.push(i);
+            }
+        }
+        console.log(stackData);
+        d3.select('#stack-graph')
+            .selectAll('g')
+            .data(stackData)
+            .selectAll('rect')
+            .data(d => d);
         bar_layout = $("input:radio:checked").val();
         groupedData = [];
-        for (let i of keys_alphabet) {
+        for(let i of keys_alphabet) {
             let array = [];
             for (let j of stackData) {
                 array.push(j[i]);
@@ -126,7 +170,7 @@ function draw_SGB() {
         }
         stackData = stack(stackData);
         groupedMax = d3.max(groupedData, d => d3.max(d));
-        stackMax = d3.max(stackData, y => d3.max(y, y => y[1]));
+        stackMax = d3.max(YearData, y => y.Global_Sales);
         let yMax = bar_layout == 'stacked' ? stackMax: groupedMax;
         //axis update
         let new_y_axis = update_y_axis(yMax);
@@ -136,9 +180,10 @@ function draw_SGB() {
         y_scale = d3.scaleLinear()
             .domain([0, stackMax])
             .range([_height - padding.bottom, padding.top]);
-        if (bar_layout === 'stacked')
+        if(bar_layout == 'stacked')
             transitionStacked();
-        else if (bar_layout === 'grouped')
+        else if(bar_layout == 'grouped')
             transitionGrouped();
+
     }
 }

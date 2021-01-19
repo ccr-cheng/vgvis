@@ -7,6 +7,7 @@ function refresh() {
     // console.log(year_range);
     for (let cb of year_cb)
         cb();
+
 }
 
 /*

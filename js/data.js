@@ -12,7 +12,7 @@ let vgdata = {
             let g_data = {id: i, g_name: d, count: 0};
             for (let field of vgdata.aggr_fields)
                 g_data[field] = 0.;
-            return g_data
+            return g_data;
         });
         data.forEach(d => {
             let d_group = group_data[group2idx.get(d[group])];
