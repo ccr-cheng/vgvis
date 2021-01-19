@@ -25,33 +25,36 @@
         <input class="range-slider" type="hidden" value="1960,2020" style="margin: 0 auto; text-align: center;">
     </div>
     <div class="selector" style="text-align: left;">
-            <select class="selectpicker" id="SalesType" data-live-search="true"  data-size="5" data-width="7.5%" title="Sales" onchange="SaleTypeSelector(this)">
-                <option value="Global_Sales">Global Sales</option>
-                <option value="NA_Sales">NA Sales</option>
-                <option value="EU_Sales">EU Sales</option>
-                <option value="JP_Sales">JP Sales</option>
-                <option value="Other_Sales">Other Sales</option>
-            </select>
-            <select class="selectpicker" id="AttributeType" data-live-search="true" data-size="5" data-width="12.5%" title="Attribute Type" onchange="AttributeTypeSelector(this)">
-                <option value="Platform">Platform</option>
-                <option value="Genre">Genre</option>
-                <option value="Publisher">Publisher</option>
-            </select>
-            <select class="selectpicker" id="AttributeValue" data-live-search="true"  data-size="5" data-width="20%" title="Attribute Value" multiple onchange="AttributeValueSelector(this)">
-            </select>
+        <select class="selectpicker" id="SalesType" data-live-search="true" data-size="5" data-width="12.5%"
+                title="Sales" onchange="SaleTypeSelector(this)">
+            <option value="Global_Sales">Global Sales</option>
+            <option value="NA_Sales">NA Sales</option>
+            <option value="EU_Sales">EU Sales</option>
+            <option value="JP_Sales">JP Sales</option>
+            <option value="Other_Sales">Other Sales</option>
+        </select>
+        <select class="selectpicker" id="AttributeType" data-live-search="true" data-size="5" data-width="12.5%"
+                title="Attribute Type" onchange="AttributeTypeSelector(this)">
+            <option value="Platform">Platform</option>
+            <option value="Genre">Genre</option>
+            <option value="Publisher">Publisher</option>
+        </select>
+        <select class="selectpicker" id="AttributeValue" data-live-search="true" data-size="5" data-width="20%"
+                title="Attribute Value" multiple onchange="AttributeValueSelector(this)">
+        </select>
     </div>
+    <div class="bubble"></div>
     <div class="stack-grouped-bar">
-        <form id="stack-group-select" style="position: fixed; right: 2%; top: 1%">
-<!--            <label style="margin-left: .1em; display: inline-flex; align-content: flex-start; align-items: flex-start" onchange="refresh()">-->
+        <form id="stack-group-select" style="position: relative; right: 2%; top: 1%">
+            <!--            <label style="margin-left: .1em; display: inline-flex; align-content: flex-start; align-items: flex-start" onchange="refresh()">-->
             <input type="radio" name="radio" value="stacked" onchange="refresh()" checked>Stacked
-<!--            </label>-->
-<!--            <label style="margin-left: .1em; display: inline-flex; align-content: flex-start; align-items: flex-start" onchange="refresh()">-->
+            <!--            </label>-->
+            <!--            <label style="margin-left: .1em; display: inline-flex; align-content: flex-start; align-items: flex-start" onchange="refresh()">-->
             <input type="radio" name="radio" value="grouped" onchange="refresh()">Grouped
-<!--            </label>-->
+            <!--            </label>-->
         </form>
     </div>
     <div class="scatter"></div>
-    <div class="bubble"></div>
     <div class="pie"></div>
 </div>
 <script src="js/data.js"></script>

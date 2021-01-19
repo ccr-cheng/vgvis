@@ -2,15 +2,18 @@
 
 */
 let bar_layout = 'grouped';
+
 function draw_SGB() {
+    let width = _width * 2 / 3, height = _height * 2 / 3;
     let svg = d3.select('.stack-grouped-bar')
         .append('svg')
-        .attr('width', _width)
-        .attr('height', _height);
+        .attr('width', width)
+        .attr('height', height)
+        .attr('y', -height / 2);
     let keys_alphabet = ['EU_Sales', 'JP_Sales', 'NA_Sales', 'Other_Sales'];
     let padding = {
-        top: .02 * _height, bottom: .12 * _height,
-        left: .05 * _width, right: .1 * _width
+        top: 0, bottom: .12 * height,
+        left: .05 * width, right: .1 * width
     };
     let XRange = [];
     for (let i = year_range[0]; i <= year_range[1]; i++)
@@ -23,7 +26,7 @@ function draw_SGB() {
     });
     let stackData = YearData;
     let groupedData = [];
-    for(let i of keys_alphabet) {
+    for (let i of keys_alphabet) {
         let array = [];
         for (let j of stackData) {
             array.push(j[i]);
@@ -45,7 +48,7 @@ function draw_SGB() {
     let update_y_axis = (Max) => {
         let y_scale = d3.scaleLinear()
             .domain([0, Max])
-            .range([_height - padding.bottom, padding.top]);
+            .range([height - padding.bottom, padding.top]);
         return d3.axisLeft()
             .scale(y_scale)
             .ticks()
@@ -53,11 +56,11 @@ function draw_SGB() {
     }
     let x_scale = d3.scaleBand()
         .domain(XRange)
-        .rangeRound([padding.left, _width - padding.right])
+        .rangeRound([padding.left, width - padding.right])
         .padding(0.08);
     let y_scale = d3.scaleLinear()
         .domain([0, stackMax])
-        .range([_height - padding.bottom, padding.top]);
+        .range([height - padding.bottom, padding.top]);
     let color = d3.scaleOrdinal()
         .domain(keys_alphabet)
         .range(d3.quantize(d3.interpolateViridis, 4))
@@ -85,7 +88,7 @@ function draw_SGB() {
         .attr('transform', `translate(${padding.left}, ${0})`)
         .call(y_Axis);
     let x_axis = svg.append('g')
-        .attr('transform', `translate(${0}, ${_height - padding.bottom})`)
+        .attr('transform', `translate(${0}, ${height - padding.bottom})`)
         .call(x_Axis)
         .selectAll('text')
         .attr('x', 10)
@@ -95,7 +98,7 @@ function draw_SGB() {
 
     rect.on('mouseover', (e, d) => {
         let content = '<table><tr><td>Year</td><td>' + d.data.g_name + '</td></tr>'
-            + '<tr><td>'+ keys_alphabet[d[2]] +'</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(4) + '</td></tr></table>';
+            + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(4) + '</td></tr></table>';
         let tooltip = d3.select('#tooltip');
         tooltip.html(content)
             .style('left', (x_scale(d.data.g_name) + 5) + 'px')
@@ -115,8 +118,9 @@ function draw_SGB() {
     svg.append('g')
         .attr('class', 'legend_auto')
         .style('font-size', 12)
-        .attr('transform', `translate(${0.9 * _width}, ${0.1 * _height})`)
+        .attr('transform', `translate(${0.9 * width}, ${0.1 * height})`)
         .call(legend_auto);
+
     function transitionGrouped() {
         rect.transition()
             .duration(700)
@@ -129,6 +133,7 @@ function draw_SGB() {
             .attr('y', d => y_scale(d[1] - d[0]))
             .attr('height', d => y_scale(0) - y_scale(d[1] - d[0]));
     }
+
     function transitionStacked() {
         rect.transition()
             .duration(700)
@@ -140,20 +145,18 @@ function draw_SGB() {
             .attr('x', (d, i) => x_scale(XRange[i]))
             .attr('width', x_scale.bandwidth());
     }
+
     return () => {
         //data update
         YearData = vgdata.aggregate('Year', filter_attr).filter(d => d['g_name'] >= year_range[0] && d['g_name'] <= year_range[1]);
-        for(let i = 1980; i <= 2016; i++)
-        {
+        for (let i = 1980; i <= 2016; i++) {
             let flag = 1;
             for (let j = 0; j < YearData.length; j++)
-                if(parseInt(YearData[j].g_name) == i)
-                {
+                if (parseInt(YearData[j].g_name) == i) {
                     flag = 0;
                     break;
                 }
-            if(flag)
-            {
+            if (flag) {
                 let year = {};
                 year.id = YearData.length;
                 year.g_name = i.toString();
@@ -173,7 +176,7 @@ function draw_SGB() {
         });
         groupedData = [];
         stackData = YearData;
-        for(let i of keys_alphabet) {
+        for (let i of keys_alphabet) {
             let array = [];
             for (let j of stackData) {
                 array.push(j[i]);
@@ -194,7 +197,7 @@ function draw_SGB() {
         bar_layout = $("input:radio:checked").val();
         groupedMax = d3.max(groupedData, d => d3.max(d));
         stackMax = d3.max(YearData, y => y.Global_Sales);
-        let yMax = bar_layout == 'stacked' ? stackMax: groupedMax;
+        let yMax = bar_layout == 'stacked' ? stackMax : groupedMax;
         //axis update
         let new_y_axis = update_y_axis(yMax);
         y_axis.transition()
@@ -202,10 +205,10 @@ function draw_SGB() {
             .call(new_y_axis);
         y_scale = d3.scaleLinear()
             .domain([0, stackMax])
-            .range([_height - padding.bottom, padding.top]);
-        if(bar_layout == 'stacked')
+            .range([height - padding.bottom, padding.top]);
+        if (bar_layout == 'stacked')
             transitionStacked();
-        else if(bar_layout == 'grouped')
+        else if (bar_layout == 'grouped')
             transitionGrouped();
     }
 }

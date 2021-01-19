@@ -1,25 +1,26 @@
 function calcTranslate(data, move = 4) {
-  const moveAngle = data.startAngle + ((data.endAngle - data.startAngle) / 2);
-  return `translate(${- move * Math.cos(moveAngle + Math.PI / 2)}, ${- move * Math.sin(moveAngle + Math.PI / 2)})`;
+    const moveAngle = data.startAngle + ((data.endAngle - data.startAngle) / 2);
+    return `translate(${-move * Math.cos(moveAngle + Math.PI / 2)}, ${-move * Math.sin(moveAngle + Math.PI / 2)})`;
 }
 
 function draw_pie() {
+    let width = height = _height * 2 / 3;
     let cur_sales = 'Global_Sales';
 
     let svg = d3.select('.pie')
         .append('svg')
-        .attr('width', _width)
-        .attr('height', _height);
-    let margin = .1 * Math.min(_width, _height);
-    let padding = .05 * Math.min(_width, _height);
-    let radius = Math.min(_width, _height) / 2 - margin;
+        .attr('width', width)
+        .attr('height', height);
+    let margin = .1 * Math.min(width, height);
+    let padding = .05 * Math.min(width, height);
+    let radius = Math.min(width, height) / 2 - margin;
 
     //let data = vgdata.Genre_data;
     let data = vgdata.aggregate('Genre', filter_all)
 
     let g = svg.append('g')
         .attr('font-family', fontFamily)
-        .attr('transform', `translate(${_width / 2}, ${_height / 2})`);
+        .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
 
     let pie = d3.pie()
@@ -29,7 +30,7 @@ function draw_pie() {
 
     let color = d3.scaleOrdinal()
         .domain(data.map(d => d['g_name']))
-        .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 ), data.length).reverse())
+        .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8), data.length).reverse())
 
     let data_ready = pie(data);
 

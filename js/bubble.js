@@ -1,21 +1,23 @@
 function draw_bubble(max_node = 800) {
+    let width = _width * 2 / 3, height = _height * 2 / 3;
     let svg = d3.select('.bubble')
         .append('svg')
-        .attr('width', _width)
-        .attr('height', _height)
+        .attr('width', width)
+        .attr('height', height)
         .append('g');
     let padding = {
-        top: .02 * _height, bottom: .12 * _height,
-        left: .05 * _width, right: .1 * _width
+        top: .02 * height, bottom: .12 * height,
+        left: .05 * width, right: .05 * width
     };
-    let x_interp = d3.interpolate(padding.left, _width - padding.right);
+    let x_interp = d3.interpolate(padding.left, width - padding.right);
     let get_x = year => {
         return x_interp((year - year_range[0]) / (year_range[1] - year_range[0]))
     };
+    let size_scale = 3;
     let initialize = d => {
-        d.r = 5 * Math.sqrt(+d[cur_sale]);
+        d.r = size_scale * Math.sqrt(+d[cur_sale]);
         d.x = get_x(d['Year']);
-        d.y = _height * 0.4 + _height * 0.1 * Math.random();
+        d.y = height * 0.4 + height * 0.1 * Math.random();
         return d;
     };
 
@@ -26,9 +28,9 @@ function draw_bubble(max_node = 800) {
     let simulation = d3.forceSimulation(nodes)
         .velocityDecay(.2)
         .force('x', d3.forceX(d => get_x(d['Year'])).strength(0.1))
-        .force('y', d3.forceY(height + (padding.top - padding.bottom) / 2).strength(0.02))
-        // .force('boundary', forceBoundary(0, padding.top,
-        //     _width, _height - padding.bottom).strength(0.005))
+        .force('y', d3.forceY(height / 2 + (padding.top - padding.bottom) / 2).strength(0.02))
+        // .force('boundary', forceBoundary(-width, padding.top,
+        //     width * 2, height - padding.bottom).strength(0.005))
         .force('collide', d3.forceCollide().radius(d => d.r).iterations(2));
 
     let drag = simulation => {
@@ -77,7 +79,7 @@ function draw_bubble(max_node = 800) {
             // tooltip
             let tooltip = d3.select('#tooltip');
             tooltip.html(content)
-                .style('left', (d.x + 5) + 'px')
+                .style('left', (d.x + _width / 3 + 5) + 'px')
                 .style('top', (d.y + 5) + 'px')
                 .style('visibility', 'visible');
         })
@@ -97,7 +99,7 @@ function draw_bubble(max_node = 800) {
     let update_x_axis = () => {
         let x = d3.scaleLinear()
             .domain(year_range)
-            .range([padding.left, _width - padding.right]);
+            .range([padding.left, width - padding.right]);
         return d3.axisBottom()
             .scale(x)
             .tickFormat(d => d)
@@ -105,7 +107,7 @@ function draw_bubble(max_node = 800) {
     let axis_x = update_x_axis();
 
     let x_axis = svg.append('g')
-        .attr('transform', `translate(0, ${height})`)
+        .attr('transform', `translate(0, ${height / 2})`)
         .call(axis_x)
         .attr('font-family', fontFamily)
         .attr('font-size', '1rem');
@@ -142,7 +144,7 @@ function draw_bubble(max_node = 800) {
         update(filter_year);
     };
     let update_sale = () => {
-        nodes.forEach(d => d.r = 5 * Math.sqrt(+d[cur_sale]));
+        nodes.forEach(d => d.r = size_scale * Math.sqrt(+d[cur_sale]));
         node.transition()
             .duration(1000)
             .attr('r', d => d.r);

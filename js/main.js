@@ -1,7 +1,5 @@
 const _width = $(window).width();
 const _height = $(window).height();
-const width = 0.5 * _width;
-const height = 0.5 * _height;
 let year_range = [1980, 2016];
 let cur_sale = 'Global_Sales';
 let cur_attribute_type = 'none';
@@ -49,13 +47,13 @@ function main() {
          */
         setTimeSlider();
         draw_pie();
-        //let bar_refresh = draw_SGB();
-        //attr_value_cb.push(bar_refresh);
+        let bar_refresh = draw_SGB();
+        attr_value_cb.push(bar_refresh);
         // draw_scatter();
-        //let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
-        //year_cb.push(bubble_year_cb);
-        //sale_type_cb.push(bubble_sale_cb);
-        //attr_value_cb.push(bubble_attr_cb);
+        let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
+        year_cb.push(bubble_year_cb);
+        sale_type_cb.push(bubble_sale_cb);
+        attr_value_cb.push(bubble_attr_cb);
 
     });
 

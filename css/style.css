@@ -67,6 +67,7 @@ body {
     overflow-x: hidden;
     overflow-y: scroll;
     user-select: none;
+    position: relative;
 }
 
 
@@ -167,4 +168,20 @@ input {
 .node {
     stroke: white;
     stroke-width: 1px;
+}
+
+.bubble {
+    float: right;
+    right: 0;
+}
+
+.stack-grouped-bar {
+    position: absolute;
+    top: 40%;
+}
+
+.pie {
+    position: absolute;
+    top: 80%;
+    right: 2%;
 }
