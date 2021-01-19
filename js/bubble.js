@@ -150,7 +150,9 @@ function draw_bubble(max_node = 800) {
             .force('collide', d3.forceCollide().radius(d => d.r).iterations(2));
     };
     let update_attr = () => {
-        update(d => cur_attribute_value.has(d[cur_attribute_type]))
+        if (cur_attribute_value.has('All'))
+            update(() => true);
+        else update(d => cur_attribute_value.has(d[cur_attribute_type]))
     };
     return [update_year, update_sale, update_attr];
 }

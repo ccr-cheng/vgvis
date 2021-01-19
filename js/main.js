@@ -53,10 +53,10 @@ function main() {
         setTimeSlider();
         bar_cb.push(draw_SGB());
         // draw_scatter();
-        // let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
-        // year_cb.push(bubble_year_cb);
-        // sale_type_cb.push(bubble_sale_cb);
-        // attr_value_cb.push(bubble_attr_cb);
+        let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
+        year_cb.push(bubble_year_cb);
+        sale_type_cb.push(bubble_sale_cb);
+        attr_value_cb.push(bubble_attr_cb);
     });
 
 }

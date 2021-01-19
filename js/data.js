@@ -40,6 +40,8 @@ function get_min_max(data, attr) {
 function aggregate(data, group) {
     console.log(`Processing ${group} data ...`);
     let unique = [...new Set(data.map(d => d[group]))];
+    if (group === 'Year')
+        unique = unique.sort((a, b) => a - b);
     let group2idx = new Map(unique.map((d, i) => [d, i]));
     let group_data = unique.map((d, i) => {
         let g_data = {id: i, g_name: d, count: 0};
@@ -63,7 +65,7 @@ function proc_data(data) {
     vgdata['Game_data'] = data.filter(d => d['Year'] !== 'N/A' &&
         +d['Year'] >= 1980 && +d['Year'] <= 2016);
     for (let group of vgdata.aggr_groups) {
-        aggregate(data, group)
+        aggregate(vgdata['Game_data'], group)
     }
     //generate publisher list
     for (let data of vgdata.Publisher_data) {
