@@ -53,7 +53,7 @@ function draw_pie(attr) {
         .data(data_ready)
         .join('path')
         .transition()
-        .delay((d, i) => i * 130)
+        .delay((d, i) => i * 60)
         .duration(500)
         .attr('d', arc)
         .attr('fill', function (d) {

@@ -52,15 +52,12 @@ function main() {
             sale_type_cb.push(pie_sale_cb);
             attr_value_cb.push(pie_attr_cb);
         }
-        // let [pie_sale_cb, pie_attr_cb] = draw_pie('Publisher');
-        // attr_value_cb.push(pie_attr_cb);
-        // sale_type_cb.push(pie_sale_cb);
-        // let bar_refresh = draw_SGB();
-        // attr_value_cb.push(bar_refresh);
-        // let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
-        // year_cb.push(bubble_year_cb);
-        // sale_type_cb.push(bubble_sale_cb);
-        // attr_value_cb.push(bubble_attr_cb);
+        let bar_refresh = draw_SGB();
+        attr_value_cb.push(bar_refresh);
+        let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
+        year_cb.push(bubble_year_cb);
+        sale_type_cb.push(bubble_sale_cb);
+        attr_value_cb.push(bubble_attr_cb);
 
     });
 
