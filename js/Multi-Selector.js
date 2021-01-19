@@ -50,7 +50,7 @@ function AttributeValueSelector(obj) {
     $('#AttributeValue').find('option:selected').each(function () {
         cur_attribute_value.add($(this).val());
     });
-    data_update();
+    year_data_update();
     for (let cb of attr_value_cb)
         cb();
 }
