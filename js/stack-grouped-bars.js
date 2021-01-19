@@ -2,7 +2,6 @@
 
 */
 let bar_layout = 'grouped';
-
 function draw_SGB() {
     let svg = d3.select('.stack-grouped-bar')
         .append('svg')
@@ -61,7 +60,7 @@ function draw_SGB() {
         .range([_height - padding.bottom, padding.top]);
     let color = d3.scaleOrdinal()
         .domain(keys_alphabet)
-        .range(d3.schemeCategory10)
+        .range(d3.quantize(d3.interpolateViridis, 4))
         .unknown('#ccc');
     let x_Axis = d3.axisBottom()
         .scale(x_scale)
@@ -74,6 +73,7 @@ function draw_SGB() {
         .data(stackData)
         .join('g')
         .attr('fill', d => color(d.key))
+        .attr('fill-opacity', 0.7)
         .selectAll('rect')
         .data(d => d)
         .join('rect')
@@ -92,6 +92,31 @@ function draw_SGB() {
         .attr('y', 10)
         .attr('transform', 'rotate(45)');
 
+
+    rect.on('mouseover', (e, d) => {
+        let content = '<table><tr><td>Year</td><td>' + d.data.g_name + '</td></tr>'
+            + '<tr><td>'+ keys_alphabet[d[2]] +'</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(4) + '</td></tr></table>';
+        let tooltip = d3.select('#tooltip');
+        tooltip.html(content)
+            .style('left', (x_scale(d.data.g_name) + 5) + 'px')
+            .style('top', ((y_scale(d[0]) + y_scale(d[1])) / 2 + 5) + 'px')
+            .style('visibility', 'visible');
+    })
+        .on('mouseout', () => {
+            let tooltip = d3.select('#tooltip');
+            tooltip.style('visibility', 'hidden');
+        })
+
+    let legend_auto = d3.legendColor()
+        .scale(color)
+        .cells(keys_alphabet)
+        // .orient('')
+        .shapeWidth(10);
+    svg.append('g')
+        .attr('class', 'legend_auto')
+        .style('font-size', 12)
+        .attr('transform', `translate(${0.9 * _width}, ${0.1 * _height})`)
+        .call(legend_auto);
     function transitionGrouped() {
         rect.transition()
             .duration(700)
@@ -146,7 +171,16 @@ function draw_SGB() {
             let v2 = parseInt(b['g_name']);
             return v1 - v2;
         });
-        stackData = stack(YearData);
+        groupedData = [];
+        stackData = YearData;
+        for(let i of keys_alphabet) {
+            let array = [];
+            for (let j of stackData) {
+                array.push(j[i]);
+            }
+            groupedData.push(array);
+        }
+        stackData = stack(stackData);
         for (let i = 0; i < stackData.length; i++) {
             for (let j of stackData[i]) {
                 j.push(i);
@@ -158,21 +192,13 @@ function draw_SGB() {
             .selectAll('rect')
             .data(d => d);
         bar_layout = $("input:radio:checked").val();
-        groupedData = [];
-        for(let i of keys_alphabet) {
-            let array = [];
-            for (let j of stackData) {
-                array.push(j[i]);
-            }
-            groupedData.push(array);
-        }
         groupedMax = d3.max(groupedData, d => d3.max(d));
         stackMax = d3.max(YearData, y => y.Global_Sales);
         let yMax = bar_layout == 'stacked' ? stackMax: groupedMax;
         //axis update
         let new_y_axis = update_y_axis(yMax);
         y_axis.transition()
-            .duration(1000)
+            .duration(700)
             .call(new_y_axis);
         y_scale = d3.scaleLinear()
             .domain([0, stackMax])

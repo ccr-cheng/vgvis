@@ -4,9 +4,9 @@
     <title> A Visualization for Faculties That Research on Computer Science in Well-known Universities </title>
     <script src="js/jquery.min.js"></script>
     <script src="js/d3.v6.min.js"></script>
-    <script src="js/d3-tip.js"></script>
-    <script src="js/jquery.range.js"></script>
+    <script type="text/javascript" src="js/jquery.range.js"></script>
     <script src="js/d3-force-boundary.min.js"></script>
+    <script src="js/d3-legend.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-select.min.js"></script>
 
@@ -42,12 +42,12 @@
     </div>
     <div class="stack-grouped-bar">
         <form id="stack-group-select" style="position: fixed; right: 2%; top: 1%">
-            <label style="margin-left: .1em; display: inline-flex; align-content: flex-start; align-items: flex-start" onchange="refresh()">
-            <input type="radio" name="radio" value="stacked" checked>Stacked
-            </label>
-            <label style="margin-left: .1em; display: inline-flex; align-content: flex-start; align-items: flex-start" onchange="refresh()">
-            <input type="radio" name="radio" value="grouped">Grouped
-            </label>
+<!--            <label style="margin-left: .1em; display: inline-flex; align-content: flex-start; align-items: flex-start" onchange="refresh()">-->
+            <input type="radio" name="radio" value="stacked" onchange="refresh()" checked>Stacked
+<!--            </label>-->
+<!--            <label style="margin-left: .1em; display: inline-flex; align-content: flex-start; align-items: flex-start" onchange="refresh()">-->
+            <input type="radio" name="radio" value="grouped" onchange="refresh()">Grouped
+<!--            </label>-->
         </form>
     </div>
     <div class="scatter"></div>
