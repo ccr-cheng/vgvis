@@ -39,11 +39,19 @@
             <select class="selectpicker" id="AttributeValue" data-live-search="true"  data-size="5" data-width="20%" title="Attribute Value" multiple onchange="AttributeValueSelector(this)">
             </select>
     </div>
-    <div class="stack-grouped-bar"></div>
+    <div class="stack-grouped-bar">
+        <form id="stack-group-select" style="position: fixed; right: 2%; top: 1%">
+            <label style="margin-left: .1em; display: inline-flex; align-content: flex-start; align-items: flex-start" onchange="bar_refresh()">
+            <input type="radio" name="radio" value="stacked" checked>Stacked
+            </label>
+            <label style="margin-left: .1em; display: inline-flex; align-content: flex-start; align-items: flex-start" onchange="bar_refresh()">
+            <input type="radio" name="radio" value="grouped" checked>Grouped
+            </label>
+        </form>
+    </div>
     <div class="scatter"></div>
     <div class="bubble"></div>
 </div>
-
 <script src="js/data.js"></script>
 <script src="js/TimeSlider.js"></script>
 <script src="js/stack-grouped-bars.js"></script>

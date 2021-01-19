@@ -8,6 +8,7 @@ let cur_attribute_value = new Set();
 let year_cb = [];
 let sale_type_cb = [];
 let attr_value_cb = [];
+let bar_cb = [];
 
 function set_ui() {
     // 设置字体
@@ -50,12 +51,12 @@ function main() {
         for (let attr in vgdata)
             console.log(attr);
         setTimeSlider();
-        // callbacks.push(draw_SGB());
+        bar_cb.push(draw_SGB());
         // draw_scatter();
-        let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
-        year_cb.push(bubble_year_cb);
-        sale_type_cb.push(bubble_sale_cb);
-        attr_value_cb.push(bubble_attr_cb);
+        // let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
+        // year_cb.push(bubble_year_cb);
+        // sale_type_cb.push(bubble_sale_cb);
+        // attr_value_cb.push(bubble_attr_cb);
     });
 
 }

@@ -9,6 +9,13 @@ function refresh() {
     // console.log(year_range);
     for (let cb of year_cb)
         cb();
+    for(let cb of bar_cb)
+        cb();
+}
+
+function bar_refresh() {
+    for(let cb of bar_cb)
+        cb();
 }
 
 /*
