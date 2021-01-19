@@ -9,10 +9,13 @@ let cur_attribute_value = new Set();
 let year_cb = [];
 let sale_type_cb = [];
 let attr_value_cb = [];
-let bar_cb = [];
 
 let filter_year = d => +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1];
-let filter_attr = d => cur_attribute_value.has(d[cur_attribute_type]);
+let filter_attr = d => {
+    if (cur_attribute_type === 'none') return true;
+    if (cur_attribute_value.has('All')) return true;
+    return cur_attribute_value.has(d[cur_attribute_type]);
+};
 
 function set_ui() {
     // 设置字体
@@ -39,7 +42,8 @@ function main() {
          * - `Game_data`: raw data for each game
          */
         setTimeSlider();
-        // bar_cb.push(draw_SGB());
+        bar_refresh = draw_SGB();
+        attr_value_cb.push(bar_refresh);
         // draw_scatter();
         let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
         year_cb.push(bubble_year_cb);
