@@ -49,7 +49,8 @@ function main() {
          * - `Game_data`: raw data for each game
          */
         setTimeSlider();
-        draw_pie();
+        let pie_refresh = draw_pie('Genre');
+        attr_value_cb.push(pie_refresh);
         //let bar_refresh = draw_SGB();
         //attr_value_cb.push(bar_refresh);
         // draw_scatter();

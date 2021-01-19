@@ -3,9 +3,8 @@ function calcTranslate(data, move = 4) {
   return `translate(${- move * Math.cos(moveAngle + Math.PI / 2)}, ${- move * Math.sin(moveAngle + Math.PI / 2)})`;
 }
 
-function draw_pie() {
-    let cur_sales = 'Global_Sales';
-
+function draw_pie(group_attr) {
+    let cur_sales = cur_sale;
 
     let svg = d3.select('.pie')
         .append('svg')
@@ -16,7 +15,7 @@ function draw_pie() {
     let radius = Math.min(_width, _height) / 2 - margin;
 
     //let data = vgdata.Genre_data;
-    let data = vgdata.aggregate('Genre', filter_year)
+    let data = vgdata.aggregate(group_attr, filter_all);
 
     let g = svg.append('g')
         .attr('font-family', fontFamily)
@@ -26,7 +25,7 @@ function draw_pie() {
     let pie = d3.pie()
         .startAngle(Math.PI)
         .endAngle(3 * Math.PI)
-        .value(d => d[cur_sales])
+        .value(d => d[cur_sales]);
 
     let color = d3.scaleOrdinal()
         .domain(data.map(d => d['g_name']))
@@ -151,6 +150,25 @@ function draw_pie() {
     cardBack.append('text')
         .text('Back');
 
+    return () => {
+        data = vgdata.aggregate(group_attr, filter_all);
+        cur_sales = cur_sale;
+
+        pie = d3.pie()
+            .startAngle(Math.PI)
+            .endAngle(3 * Math.PI)
+            .value(d => d[cur_sales]);
+
+         color = d3.scaleOrdinal()
+            .domain(data.map(d => d['g_name']))
+            .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 ), data.length).reverse())
+
+        data_ready = pie(data);
+
+        d3.select('.pie')
+            .selectAll('g')
+            .data(data_ready);
+    }
 
 }
 
