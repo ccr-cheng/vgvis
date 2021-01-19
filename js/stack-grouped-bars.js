@@ -2,6 +2,7 @@
 
 */
 let bar_layout = 'grouped';
+let bar_refresh = null;
 
 function draw_SGB() {
     let svg = d3.select('.stack-grouped-bar')
@@ -16,16 +17,9 @@ function draw_SGB() {
     let XRange = [];
     for (let i = year_range[0]; i <= year_range[1]; i++)
         XRange.push(i);
-    let YearData = vgdata.Year_data;
-    let filter_year = d => d['g_name'] >= year_range[0] && d['g_name'] <= year_range[1];
-    YearData.sort(function (a, b) {
-        let v1 = parseInt(a['g_name']);
-        let v2 = parseInt(b['g_name']);
-        return v1 - v2;
-    });
-    let stackData = YearData.filter(d => filter_year(d));
+    let stackData = vgdata.aggregate('Year', filter_year);
     let groupedData = [];
-    for(let i of keys_alphabet) {
+    for (let i of keys_alphabet) {
         let array = [];
         for (let j of stackData) {
             array.push(j[i]);
@@ -52,7 +46,7 @@ function draw_SGB() {
             .scale(y_scale)
             .ticks()
             .tickFormat(d => d);
-    }
+    };
     let x_scale = d3.scaleBand()
         .domain(XRange)
         .rangeRound([padding.left, _width - padding.right])
@@ -79,7 +73,7 @@ function draw_SGB() {
         .data(d => d)
         .join('rect')
         .attr('x', (d, i) => x_scale(XRange[i]))
-        .attr('y', (d, i) => y_scale(d[1]))
+        .attr('y', d => y_scale(d[1]))
         .attr('height', d => y_scale(d[0]) - y_scale(d[1]))
         .attr('width', x_scale.bandwidth());
     let y_axis = svg.append('g')
@@ -105,6 +99,7 @@ function draw_SGB() {
             .attr('y', d => y_scale(d[1] - d[0]))
             .attr('height', d => y_scale(0) - y_scale(d[1] - d[0]));
     }
+
     function transitionStacked() {
         rect.transition()
             .duration(1000)
@@ -116,12 +111,13 @@ function draw_SGB() {
             .attr('x', (d, i) => x_scale(XRange[i]))
             .attr('width', x_scale.bandwidth());
     }
+
     return () => {
-        //data update
-        stackData = YearData.filter(d => filter_year(d));
+        // data update
+        stackData = vgdata.aggregate('Year', filter_attr);
         bar_layout = $("input:radio:checked").val();
         groupedData = [];
-        for(let i of keys_alphabet) {
+        for (let i of keys_alphabet) {
             let array = [];
             for (let j of stackData) {
                 array.push(j[i]);
@@ -140,10 +136,9 @@ function draw_SGB() {
         y_scale = d3.scaleLinear()
             .domain([0, stackMax])
             .range([_height - padding.bottom, padding.top]);
-        if(bar_layout == 'stacked')
+        if (bar_layout === 'stacked')
             transitionStacked();
-        else if(bar_layout == 'grouped')
+        else if (bar_layout === 'grouped')
             transitionGrouped();
-
     }
 }

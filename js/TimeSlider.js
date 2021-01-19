@@ -9,11 +9,6 @@ function refresh() {
         cb();
 }
 
-function bar_refresh() {
-    for(let cb of bar_cb)
-        cb();
-}
-
 /*
 function name: setTimeSlider
 function usage: set the TimeSlider on the bottom, style in style.css
