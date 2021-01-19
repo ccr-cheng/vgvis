@@ -5,7 +5,9 @@ const height = 0.5 * _height;
 let cur_sale = 'Global_Sales';
 let cur_attribute_type = 'none';
 let cur_attribute_value = new Set();
-let callbacks = [];
+let year_cb = [];
+let sale_type_cb = [];
+let attr_value_cb = [];
 
 function set_ui() {
     // 设置字体
@@ -48,9 +50,12 @@ function main() {
         for (let attr in vgdata)
             console.log(attr);
         setTimeSlider();
-        callbacks.push(draw_SGB());
+        // callbacks.push(draw_SGB());
         // draw_scatter();
-        // callbacks.push(draw_bubble());
+        let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
+        year_cb.push(bubble_year_cb);
+        sale_type_cb.push(bubble_sale_cb);
+        attr_value_cb.push(bubble_attr_cb);
     });
 
 }
