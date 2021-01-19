@@ -36,10 +36,10 @@ function draw_SGB() {
         .order(d3.stackOrderNone)
         .offset(d3.stackOffsetNone);
     console.log(stack(stackData));
-    stackData = stack(stackData).map((data, i) =>  {
-        console.log(data);
-        return data.map(([y0, y1, ]) => [y0, y1, i, y2]);
-    });
+    // stackData = stack(stackData).map((data, i) =>  {
+    //     console.log(data);
+    //     return data.map(([y0, y1, ]) => [y0, y1, i, y2]);
+    // });
     console.log(stackData);
     let stackMax = d3.max(stackData, y => d3.max(y, y => y[1]));
     let update_y_axis = (Max) => {
