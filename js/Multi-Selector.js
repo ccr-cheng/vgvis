@@ -9,11 +9,12 @@ when you read the a data, you can straightly judge whether they are equal or not
  */
 function SaleTypeSelector(obj) {
     cur_sale = obj.options[obj.selectedIndex].value;
+    for (let cb of sale_type_cb)
+        cb();
 }
 
 function AttributeTypeSelector(obj) {
-    if(cur_attribute_type != obj.options[obj.selectedIndex].value)
-    {
+    if (cur_attribute_type !== obj.options[obj.selectedIndex].value) {
         cur_attribute_type = obj.options[obj.selectedIndex].value;
         AddValue2Selector();
     }
@@ -22,24 +23,20 @@ function AttributeTypeSelector(obj) {
 function AddValue2Selector() {
     $('#AttributeValue').empty();
     let opts = '<option value="All">All</option>';
-    if(cur_attribute_type == 'none') return;
-    else if (cur_attribute_type == 'Platform')
-    {
+    if (cur_attribute_type === 'none') return;
+    else if (cur_attribute_type === 'Platform') {
         for (let i of platforms) {
             opts += '<option value="' + i + '">' + i + '</option>';
         }
         $('#AttributeValue').append(opts);
         $('#AttributeValue').selectpicker('refresh');
-    }
-    else if (cur_attribute_type == 'Genre')
-    {
+    } else if (cur_attribute_type === 'Genre') {
         for (let i of genres) {
             opts += '<option value="' + i + '">' + i + '</option>';
         }
         $('#AttributeValue').append(opts);
         $('#AttributeValue').selectpicker('refresh');
-    }
-    else {
+    } else {
         for (let i of publishers) {
             opts += '<option value="' + i + '">' + i + '</option>';
         }
@@ -52,6 +49,8 @@ function AttributeValueSelector(obj) {
     cur_attribute_value.clear();
     $('#AttributeValue').find('option:selected').each(function () {
         cur_attribute_value.add($(this).val());
-    })
-    console.log(cur_attribute_value);
+    });
+    // console.log(cur_attribute_value);
+    for (let cb of attr_value_cb)
+        cb();
 }

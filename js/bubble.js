@@ -4,7 +4,6 @@ function draw_bubble(max_node = 800) {
         .attr('width', _width)
         .attr('height', _height)
         .append('g');
-    let cur_sale = 'Global_Sales';
     let padding = {
         top: .02 * _height, bottom: .12 * _height,
         left: .05 * _width, right: .1 * _width
@@ -13,7 +12,6 @@ function draw_bubble(max_node = 800) {
     let get_x = year => {
         return x_interp((year - year_range[0]) / (year_range[1] - year_range[0]))
     };
-    let filter_year = d => +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1];
     let initialize = d => {
         d.r = 5 * Math.sqrt(+d[cur_sale]);
         d.x = get_x(d['Year']);
@@ -21,9 +19,9 @@ function draw_bubble(max_node = 800) {
         return d;
     };
 
-    let data = vgdata.Game_data.filter(d => filter_year(d));
-    let nodes = data.slice(0, Math.min(max_node, data.length));
-    nodes.map(d => initialize(d));
+    let nodes = vgdata.Game_data
+        .slice(0, max_node)
+        .map(d => initialize(d));
 
     let simulation = d3.forceSimulation(nodes)
         .velocityDecay(.2)
@@ -112,38 +110,12 @@ function draw_bubble(max_node = 800) {
         .attr('font-family', fontFamily)
         .attr('font-size', '1rem');
 
-    // sale selector
-    svg.append('foreignObject')
-        .attr('height', 25)
-        .attr('width', 100)
-        .append('xhtml:div')
-        .append('select')
-        .on('change', function () {
-            cur_sale = this.value;
-            nodes.forEach(d => d.r = 5 * Math.sqrt(+d[cur_sale]));
-            node.transition()
-                .duration(1000)
-                .attr('r', d => 5 * Math.sqrt(+d[cur_sale]));
-            simulation.force('collide', d3.forceCollide().radius(d => d.r).iterations(2));
-        })
-        .selectAll('option')
-        .data(vgdata.aggr_fields)
-        .join('option')
-        .attr('value', d => d)
-        .text(d => d);
-
-    return () => {
-        // update axis
-        let new_axis_x = update_x_axis();
-        x_axis.transition()
-            .duration(1000)
-            .call(new_axis_x);
-
+    let update = filter_func => {
         // update data
-        let old = node.data().filter(d => filter_year(d));
+        let old = node.data().filter(d => filter_func(d));
         let old_map = new Map(old.map(d => [d['Rank'], d]));
         nodes = vgdata.Game_data
-            .filter(d => filter_year(d))
+            .filter(d => filter_func(d))
             .map(d => old_map.get(d['Rank']) || initialize(d));
         nodes = nodes.slice(0, Math.min(max_node, nodes.length));
 
@@ -159,5 +131,26 @@ function draw_bubble(max_node = 800) {
         simulation.nodes(nodes)
             .on('tick', ticked)
             .alpha(1).restart();
-    }
+    };
+
+    let update_year = () => {
+        // update axis
+        let new_axis_x = update_x_axis();
+        x_axis.transition()
+            .duration(1000)
+            .call(new_axis_x);
+        update(d => +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1]);
+    };
+    let update_sale = () => {
+        nodes.forEach(d => d.r = 5 * Math.sqrt(+d[cur_sale]));
+        node.transition()
+            .duration(1000)
+            .attr('r', d => d.r);
+        simulation.alpha(1)
+            .force('collide', d3.forceCollide().radius(d => d.r).iterations(2));
+    };
+    let update_attr = () => {
+        update(d => cur_attribute_value.has(d[cur_attribute_type]))
+    };
+    return [update_year, update_sale, update_attr];
 }

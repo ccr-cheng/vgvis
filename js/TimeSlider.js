@@ -7,7 +7,7 @@ function usage: after changing the time scale, it will be called to redraw the g
 function refresh() {
     year_range = getTimeRange();
     // console.log(year_range);
-    for (let cb of callbacks)
+    for (let cb of year_cb)
         cb();
 }
 
