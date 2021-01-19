@@ -42,7 +42,7 @@ function main() {
          * - `Game_data`: raw data for each game
          */
         setTimeSlider();
-        bar_refresh = draw_SGB();
+        let bar_refresh = draw_SGB();
         attr_value_cb.push(bar_refresh);
         // draw_scatter();
         let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
