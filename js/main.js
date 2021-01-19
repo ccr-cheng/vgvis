@@ -16,6 +16,12 @@ let filter_attr = d => {
     if (cur_attribute_value.has('All')) return true;
     return cur_attribute_value.has(d[cur_attribute_type]);
 };
+let filter_all = d => {
+    if (!+d['Year'] >= year_range[0] && +d['Year'] <= year_range[1]) return false;
+    if (cur_attribute_type === 'none') return true;
+    if (cur_attribute_value.has('All')) return true;
+    return cur_attribute_value.has(d[cur_attribute_type]);
+};
 
 function set_ui() {
     // 设置字体
@@ -42,13 +48,15 @@ function main() {
          * - `Game_data`: raw data for each game
          */
         setTimeSlider();
-        let bar_refresh = draw_SGB();
-        attr_value_cb.push(bar_refresh);
+        draw_pie();
+        //let bar_refresh = draw_SGB();
+        //attr_value_cb.push(bar_refresh);
         // draw_scatter();
-        let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
-        year_cb.push(bubble_year_cb);
-        sale_type_cb.push(bubble_sale_cb);
-        attr_value_cb.push(bubble_attr_cb);
+        //let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
+        //year_cb.push(bubble_year_cb);
+        //sale_type_cb.push(bubble_sale_cb);
+        //attr_value_cb.push(bubble_attr_cb);
+
     });
 
 }
