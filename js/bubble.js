@@ -139,7 +139,7 @@ function draw_bubble(max_node = 800) {
         x_axis.transition()
             .duration(1000)
             .call(new_axis_x);
-        update(d => +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1]);
+        update(filter_year);
     };
     let update_sale = () => {
         nodes.forEach(d => d.r = 5 * Math.sqrt(+d[cur_sale]));
@@ -151,8 +151,8 @@ function draw_bubble(max_node = 800) {
     };
     let update_attr = () => {
         if (cur_attribute_value.has('All'))
-            update(() => true);
-        else update(d => cur_attribute_value.has(d[cur_attribute_type]))
+            update(filter_year);
+        else update(d => filter_year(d) && filter_attr(d));
     };
     return [update_year, update_sale, update_attr];
 }

@@ -2,6 +2,7 @@ const _width = $(window).width();
 const _height = $(window).height();
 const width = 0.5 * _width;
 const height = 0.5 * _height;
+let year_range = [1980, 2016];
 let cur_sale = 'Global_Sales';
 let cur_attribute_type = 'none';
 let cur_attribute_value = new Set();
@@ -9,6 +10,9 @@ let year_cb = [];
 let sale_type_cb = [];
 let attr_value_cb = [];
 let bar_cb = [];
+
+let filter_year = d => +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1];
+let filter_attr = d => cur_attribute_value.has(d[cur_attribute_type]);
 
 function set_ui() {
     // 设置字体
@@ -24,34 +28,18 @@ function set_ui() {
 
 function main() {
     set_ui();
-    // change this if you want to filter data
-    let filter_func = () => true;
     d3.csv(vgdata_file).then(data => {
-        data = data.filter(filter_func);
-        data.forEach((d, i) => d.id = i);
-
+        data = data.filter(d => d['Year'] !== 'N/A' && +d['Year'] >= 1980 && +d['Year'] <= 2016);
         proc_data(data);
         /* data is loaded into `vgdata`, an Object with
          * - `aggr_groups`: Array for the fields that can be grouped
          *     ['Platform', 'Year', 'Genre', 'Publisher']
          * - `aggr_fields`: Array for fields that can be aggregated
          *     ['NA_Sales', 'EU_Sales', 'JP_Sales', 'Other_Sales', 'Global_Sales']
-         * - `Game_data`: raw data for each game, with an additional `id` fields
-         * - `Platform_data`, `Year_data`, `Genre_data`, `Publisher_data`
-         *   Aggregated data, Array of Object, with fields
-         *     - `id`: unique id
-         *     - `g_name`: group name
-         *     - `count`: number of data in the group
-         *     - the sum of all field in the `aggr_fields`
-         * - `Platform2idx`, `Year2idx`, `Genre2idx`, `Publisher2idx`
-         *   Map that maps the group name (string) to index in the data
-         *   Use `Platform2idx.get('Nintendo')`
-         *   DO NOT use `Platform2idx['Nintendo']` (will get `undefined`)
+         * - `Game_data`: raw data for each game
          */
-        // for (let attr in vgdata)
-        //     console.log(attr);
         setTimeSlider();
-        bar_cb.push(draw_SGB());
+        // bar_cb.push(draw_SGB());
         // draw_scatter();
         let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
         year_cb.push(bubble_year_cb);

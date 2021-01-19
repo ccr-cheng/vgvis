@@ -1,16 +1,11 @@
-let year_range = [1980, 2016];
-
 /*
 function name: refresh
 function usage: after changing the time scale, it will be called to redraw the graphs
 */
 function refresh() {
     year_range = getTimeRange();
-    year_data_update();
     // console.log(year_range);
     for (let cb of year_cb)
-        cb();
-    for(let cb of bar_cb)
         cb();
 }
 
