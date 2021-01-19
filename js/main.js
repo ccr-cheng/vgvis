@@ -7,7 +7,6 @@ let cur_attribute_value = new Set();
 let year_cb = [];
 let sale_type_cb = [];
 let attr_value_cb = [];
-
 let filter_year = d => +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1];
 let filter_attr = d => {
     if (cur_attribute_type === 'none') return true;
@@ -15,7 +14,7 @@ let filter_attr = d => {
     return cur_attribute_value.has(d[cur_attribute_type]);
 };
 let filter_all = d => {
-    if (!+d['Year'] >= year_range[0] && +d['Year'] <= year_range[1]) return false;
+    if (!(+d['Year'] >= year_range[0] && +d['Year'] <= year_range[1])) return false;
     if (cur_attribute_type === 'none') return true;
     if (cur_attribute_value.has('All')) return true;
     return cur_attribute_value.has(d[cur_attribute_type]);
@@ -47,15 +46,21 @@ function main() {
          * - `Game_data`: raw data for each game
          */
         setTimeSlider();
-        let pie_refresh = draw_pie('Genre');
-        attr_value_cb.push(pie_refresh);
-        let bar_refresh = draw_SGB();
-        attr_value_cb.push(bar_refresh);
-        // draw_scatter();
-        let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
-        year_cb.push(bubble_year_cb);
-        sale_type_cb.push(bubble_sale_cb);
-        attr_value_cb.push(bubble_attr_cb);
+        for(let group of vgdata.aggr_groups) {
+            if (group == 'Publisher') continue;
+            let [pie_sale_cb, pie_attr_cb] = draw_pie(group);
+            sale_type_cb.push(pie_sale_cb);
+            attr_value_cb.push(pie_attr_cb);
+        }
+        // let [pie_sale_cb, pie_attr_cb] = draw_pie('Publisher');
+        // attr_value_cb.push(pie_attr_cb);
+        // sale_type_cb.push(pie_sale_cb);
+        // let bar_refresh = draw_SGB();
+        // attr_value_cb.push(bar_refresh);
+        // let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
+        // year_cb.push(bubble_year_cb);
+        // sale_type_cb.push(bubble_sale_cb);
+        // attr_value_cb.push(bubble_attr_cb);
 
     });
 

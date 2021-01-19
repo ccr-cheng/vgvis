@@ -97,7 +97,7 @@ body {
 }
 
 label {
-    color: white;
+    color: black;
 }
 
 input {
@@ -180,8 +180,8 @@ input {
     top: 40%;
 }
 
-.pie {
-    position: absolute;
-    top: 80%;
-    right: 2%;
-}
+/*.pie {*/
+/*    position: absolute;*/
+/*    top: 80%;*/
+/*    right: 2%;*/
+/*}*/
