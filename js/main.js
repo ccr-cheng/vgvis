@@ -48,15 +48,15 @@ function main() {
          *   Use `Platform2idx.get('Nintendo')`
          *   DO NOT use `Platform2idx['Nintendo']` (will get `undefined`)
          */
-        for (let attr in vgdata)
-            console.log(attr);
+        // for (let attr in vgdata)
+        //     console.log(attr);
         setTimeSlider();
-        bar_cb.push(draw_SGB());
+        // bar_cb.push(draw_SGB());
         // draw_scatter();
-        // let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
-        // year_cb.push(bubble_year_cb);
-        // sale_type_cb.push(bubble_sale_cb);
-        // attr_value_cb.push(bubble_attr_cb);
+        let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
+        year_cb.push(bubble_year_cb);
+        sale_type_cb.push(bubble_sale_cb);
+        attr_value_cb.push(bubble_attr_cb);
     });
 
 }

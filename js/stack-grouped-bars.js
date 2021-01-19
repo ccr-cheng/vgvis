@@ -144,32 +144,6 @@ function draw_SGB() {
             transitionStacked();
         else if(bar_layout == 'grouped')
             transitionGrouped();
-        //bars
-        // svg.select('#stack-graph')
-        //     .selectAll('g')
-        //     .data(stackData)
-        //     .join('g')
-        //     .selectAll('rect')
-        //     .data(d => d)
-        //     .join(
-        //         enter => enter.append('rect')
-        //             .attr('width', x_scale.bandwidth())
-        //             .attr('fill', d => color(d.key))
-        //
-        //             .attr('height', d => y_scale(d[0]) - y_scale(d[1]))
-        //             .call(enter => enter.transition()
-        //                 .duration()
-        //                 .attr('x', (d, i) => x_scale(parseInt(d.data['g_name'])))
-        //                 .attr('y', (d, i) => y_scale(d[1])))
-                // update => update
-                //     .attr('fill', d => color(d.key))
-                //     .attr('x', (d, i) => x_scale(parseInt(d.data['g_name'])))
-                //     .attr('y', (d, i) => y_scale(d[1]))
-                //     .attr('width', x_scale.bandwidth())
-                //     .call(update => update.transition()
-                //         .duration(1000)
-                //         .attr('height', d => y_scale(d[0]) - y_scale(d[1])))
-            // );
 
     }
 }
