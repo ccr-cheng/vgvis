@@ -26,7 +26,8 @@ let filter_all = d => {
 function set_ui() {
     // 设置字体
     let ua = navigator.userAgent.toLowerCase();
-    fontFamily = "Khand-Regular";
+    //fontFamily = "Khand-Regular";
+    fontFamily = "Gill Sans"
     if (/\(i[^;]+;( U;)? CPU.+Mac OS X/gi.test(ua)) {
         fontFamily = "PingFangSC-Regular";
     }

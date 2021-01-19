@@ -6,6 +6,7 @@ function calcTranslate(data, move = 4) {
 function draw_pie() {
     let cur_sales = 'Global_Sales';
 
+
     let svg = d3.select('.pie')
         .append('svg')
         .attr('width', _width)
@@ -15,7 +16,7 @@ function draw_pie() {
     let radius = Math.min(_width, _height) / 2 - margin;
 
     //let data = vgdata.Genre_data;
-    let data = vgdata.aggregate('Genre', filter_all)
+    let data = vgdata.aggregate('Genre', filter_year)
 
     let g = svg.append('g')
         .attr('font-family', fontFamily)
@@ -63,7 +64,7 @@ function draw_pie() {
                 .duration(duration)
                 .attr('stroke', 'rgba(100, 100, 100, 0.2)')
                 .attr('stroke-width', 4);
-            d3.select('.card-back text').text(v.data['Genre']);
+            d3.select('.card-back text').text(v.data['g_name']);
         })
         .on('mouseout', (event, v) => {
             d3.select(event.currentTarget)
@@ -77,15 +78,17 @@ function draw_pie() {
                 .attr('stroke-width', 1);
         });
 
+    const textThreshold = 0.25;
 
     g.append("g")
-        .attr("font-family", "sans-serif")
+        .attr("font-family", fontFamily)
         .attr("font-size", 12)
         .attr("text-anchor", "middle")
         .selectAll("text")
         .data(data_ready)
         .join("text")
         .attr("transform", d => `translate(${arc.centroid(d)})`)
+        .style('display', v => v.endAngle - v.startAngle > textThreshold ? 'inline' : 'none')
         .call(text => text.append("tspan")
             .attr("y", "-0.4em")
             .attr("font-weight", "bold")
@@ -97,6 +100,7 @@ function draw_pie() {
             .text(d => d.data[cur_sales].toLocaleString()));
 
     const card = g.append('g')
+        .attr("font-family", fontFamily)
         .attr('text-anchor', 'middle')
         .style('-webkit-perspective', 1000)
         .style('-webkit-transform', 'rotateY(0deg)')
@@ -128,10 +132,12 @@ function draw_pie() {
     const cardFront = card.append('g')
         .attr('class', 'card-front');
     cardFront.append('text')
-        .text('Genres');
+        .attr("font-weight", "bold")
+        .text(cur_attribute_type);
     cardFront.append('text')
+        .attr("font-weight", "bold")
         .attr('dy', '-1.8rem')
-        .text('Total Sales');
+        .text(cur_sale);
     cardFront.append('text')
         .attr('dy', '1.8rem')
         .style('font-size', '90%')
@@ -144,6 +150,8 @@ function draw_pie() {
         .style('transform', 'rotateY(180deg)');
     cardBack.append('text')
         .text('Back');
+
+
 }
 
 
