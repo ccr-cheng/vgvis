@@ -48,7 +48,6 @@ function get_min_max(data, attr) {
         if (v < min)
             min = v;
     });
-    console.log('attr', attr, 'min', min, 'max', max);
 
     return [min, max];
 }

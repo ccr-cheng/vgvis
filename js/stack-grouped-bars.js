@@ -146,14 +146,12 @@ function draw_SGB() {
             let v2 = parseInt(b['g_name']);
             return v1 - v2;
         });
-        console.log(YearData);
         stackData = stack(YearData);
         for (let i = 0; i < stackData.length; i++) {
             for (let j of stackData[i]) {
                 j.push(i);
             }
         }
-        console.log(stackData);
         d3.select('#stack-graph')
             .selectAll('g')
             .data(stackData)
@@ -168,7 +166,6 @@ function draw_SGB() {
             }
             groupedData.push(array);
         }
-        stackData = stack(stackData);
         groupedMax = d3.max(groupedData, d => d3.max(d));
         stackMax = d3.max(YearData, y => y.Global_Sales);
         let yMax = bar_layout == 'stacked' ? stackMax: groupedMax;
@@ -184,6 +181,5 @@ function draw_SGB() {
             transitionStacked();
         else if(bar_layout == 'grouped')
             transitionGrouped();
-
     }
 }
