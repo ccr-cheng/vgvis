@@ -146,17 +146,33 @@ function draw_pie(attr) {
         .attr('r', (radius) / 2 - 4)
         .style('fill', 'white');
 
+    let sale_text = '';
+
+    let change_text = () => {
+        if (cur_sale === 'Global_Sales')
+            sale_text = 'Global Sales';
+        if (cur_sale === 'EU_Sales')
+            sale_text = 'Europe Sales';
+        if (cur_sale === 'NA_Sales')
+            sale_text = 'North America Sales';
+        if (cur_sale === 'JP_Sales')
+            sale_text = 'Japan Sales';
+        if (cur_sale === 'Other_Sales')
+            sale_text = 'Other Sales';
+    }
+
+    change_text();
 
     const cardFront = card.append('g')
         .attr('class', 'card-front');
     let cardFrontText2 = cardFront.append('text')
         .attr("font-weight", "bold")
         .attr('dy', '1.2rem')
-        .text(cur_attribute_type);
+        .text(sale_text);
     let cardFrontText1 = cardFront.append('text')
         .attr("font-weight", "bold")
         .attr('dy', '-1rem')
-        .text(cur_sale);
+        .text(attr);
 
 
     const cardBack = card.append('g')
@@ -175,6 +191,7 @@ function draw_pie(attr) {
 
     let update_sale = () => {
         cur_sales = cur_sale;
+        change_text();
         pie = new_pie(cur_sales);
         data_ready = pie(data);
         g.selectAll('path')
@@ -183,8 +200,8 @@ function draw_pie(attr) {
             .delay((d, i) => i * 10)
             .duration(500)
             .attr('d', arc);
-        cardFrontText1.text(cur_sales);
-        cardFrontText2.text(cur_attribute_type);
+        cardFrontText1.text(attr);
+        cardFrontText2.text(sale_text);
         pie_text.data(data_ready)
             .transition()
             .delay((d, i) => i * 10)
@@ -245,8 +262,8 @@ function draw_pie(attr) {
             .duration(500)
             .attr('d', arc);
         // text update
-        cardFrontText1.text(cur_sales);
-        cardFrontText2.text(cur_attribute_type);
+        cardFrontText1.text(attr);
+        cardFrontText2.text(sale_text);
         pie_text.data(data_ready)
             .transition()
             .delay((d, i) => i * 10)
