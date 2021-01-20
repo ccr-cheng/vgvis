@@ -1,5 +1,3 @@
-let y_attr = 'Global_Sales';
-
 function draw_scatter() {
     let padding = {'left': 0.1 * width, 'bottom': 0.25 * height, 'top': 0, 'right': 0.1 * width};
     let data = vgdata.Game_data.filter(d => d['Year'] !== 'N/A');

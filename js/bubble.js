@@ -1,5 +1,5 @@
 function draw_bubble(max_node = 800) {
-    let width = _width * 2 / 3, height = _height * 2 / 3;
+    let width = _width, height = _height;
     let svg = d3.select('.bubble')
         .append('svg')
         .attr('width', width)
@@ -13,7 +13,7 @@ function draw_bubble(max_node = 800) {
     let get_x = year => {
         return x_interp((year - year_range[0]) / (year_range[1] - year_range[0]))
     };
-    let size_scale = 3;
+    let size_scale = 5;
     let initialize = d => {
         d.r = size_scale * Math.sqrt(+d[cur_sale]);
         d.x = get_x(d['Year']);
@@ -73,14 +73,14 @@ function draw_bubble(max_node = 800) {
                 + '<tr><td>Platform</td><td>' + d['Platform'] + '</td></tr>'
                 + '<tr><td>Genre</td><td>' + d['Genre'] + '</td></tr>'
                 + '<tr><td>Publisher</td><td>' + d['Publisher'] + '</td></tr>'
-                + '<tr><td>' + y_attr.replace('_', ' ')
-                + '</td><td>' + d[y_attr] + '</td></tr></table>';
+                + '<tr><td>' + cur_sale.replace('_', ' ')
+                + '</td><td>' + d[cur_sale] + '</td></tr></table>';
 
             // tooltip
             let tooltip = d3.select('#tooltip');
             tooltip.html(content)
-                .style('left', (d.x + _width / 3 + 5) + 'px')
-                .style('top', (d.y + 5) + 'px')
+                .style('left', (d.x/* + _width / 3*/ + 10 + 'px'))
+                .style('top', (d.y + 10) + 'px')
                 .style('visibility', 'visible');
         })
         .on('mouseout', () => {

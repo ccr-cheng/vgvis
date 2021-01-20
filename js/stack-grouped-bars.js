@@ -4,7 +4,7 @@
 let bar_layout = 'grouped';
 
 function draw_SGB() {
-    let width = _width * 2 / 3, height = _height * 2 / 3;
+    let width = _width, height = _height;
     let svg = d3.select('.stack-grouped-bar')
         .append('svg')
         .attr('width', width)

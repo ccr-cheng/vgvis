@@ -24,7 +24,7 @@ function draw_pie(attr) {
     let svg = d3.select('.pie')
         .append('svg')
         .attr('width', 0.3 * _width)
-        .attr('height', _height);
+        .attr('height', 0.6 * _height);
     let width = svg._groups[0][0].width.animVal.value;//width of single svg of pie graph
     let height = svg._groups[0][0].height.animVal.value;//height of single svg of pie graph
     let margin = .1 * Math.min(width, height);

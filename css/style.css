@@ -173,18 +173,36 @@ input {
 }
 
 .bubble {
-    float: right;
+    /*float: right;*/
     right: 0;
 }
 
 .stack-grouped-bar {
     z-index: 0;
-    position: absolute;
-    top: 40%;
+    position: relative;
+    /*top: 40%;*/
 }
 
-/*.pie {*/
-/*    position: absolute;*/
-/*    top: 80%;*/
-/*    right: 2%;*/
-/*}*/
+.pie {
+    position: relative;
+    /*top: 80%;*/
+    /*right: 2%;*/
+}
+
+.main-title {
+    position: absolute;
+    left: 10%;
+    top: 70%;
+    font-size: xx-large;
+    color: #002752;
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+
+.author {
+    position: absolute;
+    left: 10%;
+    top: 80%;
+    font-size: large;
+    color: #002752;
+    font-family: "Lucida Console", "Courier New", monospace;
+}

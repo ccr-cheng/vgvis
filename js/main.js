@@ -58,7 +58,6 @@ function main() {
         year_cb.push(bubble_year_cb);
         sale_type_cb.push(bubble_sale_cb);
         attr_value_cb.push(bubble_attr_cb);
-
     });
 
 }
