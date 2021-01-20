@@ -4,7 +4,7 @@
 let bar_layout = 'grouped';
 
 function draw_SGB() {
-    let width = _width, height = _height;
+    let width = _width, height = _height * 0.8;
     let svg = d3.select('.stack-grouped-bar')
         .append('svg')
         .attr('width', width)
@@ -102,7 +102,7 @@ function draw_SGB() {
         let tooltip = d3.select('#tooltip');
         tooltip.html(content)
             .style('left', (x_scale(d.data.g_name) + 5) + 'px')
-            .style('top', ((y_scale(d[0]) + y_scale(d[1])) / 2 + 5) + 'px')
+            .style('top', ((y_scale(d[0]) + y_scale(d[1])) / 2 + _height + 5) + 'px')
             .style('visibility', 'visible');
     })
         .on('mouseout', () => {
