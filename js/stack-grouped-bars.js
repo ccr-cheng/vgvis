@@ -119,17 +119,17 @@ function draw_SGB() {
 
 
     rect.on('mouseover', (e, d) => {
-        // let content = '<table><tr><td>Year</td><td>' + d.data.g_name + '</td></tr>'
-        //     + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(4) + '</td></tr></table>';
-        // let tooltip = d3.select('#tooltip');
-        // tooltip.html(content)
-        //     .style('left', (x_scale(d.data.g_name) + 5) + 'px')
-        //     .style('top', ((y_scale(d[0]) + y_scale(d[1])) / 2 + _height + 5) + 'px')
-        //     .style('visibility', 'visible');
+        let content = '<table><tr><td>Year</td><td>' + d.data.g_name + '</td></tr>'
+            + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(4) + '</td></tr></table>';
+        let tooltip = d3.select('#tooltip');
+        tooltip.html(content)
+            .style('left', (x_scale(d.data.g_name) + 5) + 'px')
+            .style('top', ((y_scale(d[0]) + y_scale(d[1])) / 2 + _height + 5) + 'px')
+            .style('visibility', 'visible');
     })
         .on('mouseout', () => {
-            // let tooltip = d3.select('#tooltip');
-            // tooltip.style('visibility', 'hidden');
+            let tooltip = d3.select('#tooltip');
+            tooltip.style('visibility', 'hidden');
         })
 
     let legend_auto = d3.legendColor()
@@ -154,6 +154,7 @@ function draw_SGB() {
             .transition()
             .attr('y', d => y_scale(d[1] - d[0]))
             .attr('height', d => y_scale(0) - y_scale(d[1] - d[0]));
+        tooltip_grouped();
     }
 
     function transitionStacked(range) {
@@ -166,11 +167,67 @@ function draw_SGB() {
             .transition()
             .attr('x', (d, i) => x_scale(range[i]))
             .attr('width', x_scale.bandwidth());
+        tooltip_stacked();
+    }
+
+    function tooltip_grouped() {
+        rect.on('mouseover', (e, d) => {
+            if(cur_mode == 'Global')
+            {
+                let content = '<table><tr><td>Year</td><td>' + d.data.g_name + '</td></tr>'
+                    + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(4) + '</td></tr></table>';
+                let tooltip = d3.select('#tooltip');
+                tooltip.html(content)
+                    .style('left', (x_scale(d.data.g_name) + x_scale.bandwidth() / keys_alphabet.length * d[2] + 5) + 'px')
+                    .style('top', ((y_scale(d[0]) + y_scale(d[1])) / 2 + _height + 5) + 'px')
+                    .style('visibility', 'visible');
+            }
+            else {
+                let content = '<table><tr><td>Year</td><td>' + d.data.Name + '</td></tr>'
+                    + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + parseFloat(d.data[keys_alphabet[d[2]]]).toFixed(4) + '</td></tr></table>';
+                let tooltip = d3.select('#tooltip');
+                tooltip.html(content)
+                    .style('left', (x_scale(d.data.Name) + x_scale.bandwidth() / keys_alphabet.length * d[2] + 5) + 'px')
+                    .style('top', (y_scale(0) + (y_scale(d[1]) - y_scale(d[0])) / 2 + 1 * _height + 5) + 'px')
+                    .style('visibility', 'visible');
+            }
+        })
+            .on('mouseout', () => {
+                let tooltip = d3.select('#tooltip');
+                tooltip.style('visibility', 'hidden');
+            })
+    }
+
+    function tooltip_stacked() {
+        rect.on('mouseover', (e, d) => {
+            if(cur_mode == 'Global')
+            {
+                let content = '<table><tr><td>Year</td><td>' + d.data.g_name + '</td></tr>'
+                    + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(4) + '</td></tr></table>';
+                let tooltip = d3.select('#tooltip');
+                tooltip.html(content)
+                    .style('left', (x_scale(d.data.g_name) + 5) + 'px')
+                    .style('top', ((y_scale(d[0]) + y_scale(d[1])) / 2 + _height + 5) + 'px')
+                    .style('visibility', 'visible');
+            }
+            else {
+                let content = '<table><tr><td>Year</td><td>' + d.data.Name + '</td></tr>'
+                    + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + parseFloat(d.data[keys_alphabet[d[2]]]).toFixed(4) + '</td></tr></table>';
+                let tooltip = d3.select('#tooltip');
+                tooltip.html(content)
+                    .style('left', (x_scale(d.data.Name) + 5) + 'px')
+                    .style('top', ((y_scale(d[0]) + y_scale(d[1])) / 2 + _height + 5) + 'px')
+                    .style('visibility', 'visible');
+            }
+        })
+            .on('mouseout', () => {
+                let tooltip = d3.select('#tooltip');
+                tooltip.style('visibility', 'hidden');
+            })
     }
 
     let attr_value_cb = () => {
         //data update
-        console.log(stackData);
         if(cur_mode == 'Global')
         {
             YearData = vgdata.aggregate('Year', filter_attr).filter(d => d['g_name'] >= year_range[0] && d['g_name'] <= year_range[1]);
@@ -302,34 +359,8 @@ function draw_SGB() {
                 .attr('y', (d, i) => y_scale(d[1]))
                 .attr('height', d => y_scale(d[0]) - y_scale(d[1]))
                 .attr('width', x_scale.bandwidth());
-            // console.log(stackData);
-            // svg.select('#stack-graph')
-            //     .selectAll('g')
-            //     .data(stackData)
-            //     .join('g')
-            //     .attr('fill', d => color(d.key))
-            //     .attr('fill-opacity', 0.7)
-            //     .selectAll('rect')
-            //     .data(d => d)
-            //     .join(
-            //         enter => enter.append('rect')
-            //             .attr('x', (d, i) => x_scale(range[i]))
-            //             .attr('y', (d, i) => y_scale(d[1]))
-            //             .attr('height', d => y_scale(d[0]) - y_scale(d[1]))
-            //             .attr('width', x_scale.bandwidth())
-            //             .call(enter => enter.transition()
-            //                 .duration(700)),
-            //         update => update
-            //             .attr('x', (d, i) => x_scale(range[i]))
-            //             .call(update => update.transition()
-            //                 .duration(700)),
-            //         exit => exit.remove()
-            //
-            //     )
-            //     .attr('x', (d, i) => x_scale(range[i]))
-            //     .attr('y', (d, i) => y_scale(d[1]))
-            //     .attr('height', d => y_scale(d[0]) - y_scale(d[1]))
-            //     .attr('width', x_scale.bandwidth());
+            if(bar_layout == 'stacked') tooltip_stacked();
+            else tooltip_grouped();
         }
         if (bar_layout == 'stacked')
             transitionStacked(range);

@@ -151,7 +151,50 @@ function draw_bubble(max_node = 800) {
             .attr('cx', d => d.x)
             .attr('cy', d => d.y)
             .attr('r', d => d.r)
-            .call(drag(simulation));
+            .call(drag(simulation))
+            .on('mouseover', (e, d) => {
+                // show a tooltip
+                let content = '<table><tr><td>Name</td><td>' + d['Name'] + '</td></tr>'
+                    + '<tr><td>Year</td><td>' + d['Year'] + '</td></tr>'
+                    + '<tr><td>Platform</td><td>' + d['Platform'] + '</td></tr>'
+                    + '<tr><td>Genre</td><td>' + d['Genre'] + '</td></tr>'
+                    + '<tr><td>Publisher</td><td>' + d['Publisher'] + '</td></tr>'
+                    + '<tr><td>' + cur_sale.replace('_', ' ')
+                    + '</td><td>' + d[cur_sale] + '</td></tr></table>';
+
+                // tooltip
+                let tooltip = d3.select('#tooltip');
+                tooltip.html(content)
+                    .style('left', (d.x/* + _width / 3*/ + 10 + 'px'))
+                    .style('top', (d.y + 10) + 'px')
+                    .style('visibility', 'visible');
+            })
+            .on('click', function (e, d) {
+                if(d.click_time == 0) {
+                    d3.select(this).attr('fill', select_color);
+                    d.click_time = 1;
+                    select_data.Game_data.push(d);
+                    choose_action = 1;
+                    for(let cb of attr_value_cb)
+                        cb();
+                    choose_action = 0;
+                }
+                else {
+                    d3.select(this).attr('fill', d => d3.interpolateSpectral((d['Year'] - 1980) / (2016 - 1980)));
+                    d.click_time = 0;
+                    select_data.Game_data.splice(select_data.Game_data.indexOf(d), 1);
+                    choose_action = 1;
+                    for(let cb of attr_value_cb)
+                        cb();
+                    choose_action = 0;
+                }
+                update_frame();
+            })
+            .on('mouseout', () => {
+                // remove tooltip
+                let tooltip = d3.select('#tooltip');
+                tooltip.style('visibility', 'hidden');
+            });
 
         simulation.nodes(nodes)
             .on('tick', ticked)
