@@ -120,7 +120,7 @@ function draw_SGB() {
 
     rect.on('mouseover', (e, d) => {
         let content = '<table><tr><td>Year</td><td>' + d.data.g_name + '</td></tr>'
-            + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(4) + '</td></tr></table>';
+            + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(2) + '</td></tr></table>';
         let tooltip = d3.select('#tooltip');
         tooltip.html(content)
             .style('left', (x_scale(d.data.g_name) + 5) + 'px')
@@ -175,7 +175,7 @@ function draw_SGB() {
             if(cur_mode == 'Global')
             {
                 let content = '<table><tr><td>Year</td><td>' + d.data.g_name + '</td></tr>'
-                    + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(4) + '</td></tr></table>';
+                    + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(2) + '</td></tr></table>';
                 let tooltip = d3.select('#tooltip');
                 tooltip.html(content)
                     .style('left', (x_scale(d.data.g_name) + x_scale.bandwidth() / keys_alphabet.length * d[2] + 5) + 'px')
@@ -203,7 +203,7 @@ function draw_SGB() {
             if(cur_mode == 'Global')
             {
                 let content = '<table><tr><td>Year</td><td>' + d.data.g_name + '</td></tr>'
-                    + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(4) + '</td></tr></table>';
+                    + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + d.data[keys_alphabet[d[2]]].toFixed(2) + '</td></tr></table>';
                 let tooltip = d3.select('#tooltip');
                 tooltip.html(content)
                     .style('left', (x_scale(d.data.g_name) + 5) + 'px')
@@ -212,7 +212,7 @@ function draw_SGB() {
             }
             else {
                 let content = '<table><tr><td>Year</td><td>' + d.data.Name + '</td></tr>'
-                    + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + parseFloat(d.data[keys_alphabet[d[2]]]).toFixed(4) + '</td></tr></table>';
+                    + '<tr><td>' + keys_alphabet[d[2]] + '</td><td>' + parseFloat(d.data[keys_alphabet[d[2]]]).toFixed(2) + '</td></tr></table>';
                 let tooltip = d3.select('#tooltip');
                 tooltip.html(content)
                     .style('left', (x_scale(d.data.Name) + 5) + 'px')
