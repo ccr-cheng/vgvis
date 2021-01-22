@@ -7,6 +7,13 @@ AttributeValueSelector selects values that user chooses and stores them in Set c
 All variable/elements in Set is string type and exactly same with texts in vg_games dataset,
 when you read the a data, you can straightly judge whether they are equal or not for selecting this data into current dataset or not.
  */
+
+function ModeSelector(obj) {
+    cur_mode = obj.options[obj.selectedIndex].value;
+    for(let cb of attr_value_cb)
+        cb();
+}
+
 function SaleTypeSelector(obj) {
     cur_sale = obj.options[obj.selectedIndex].value;
     for (let cb of sale_type_cb)

@@ -22,6 +22,10 @@
 <div id='container'>
     <div id='tooltip'></div>
     <div class="selector" style="text-align: left;">
+        <select class="selectpicker" id="Mode" data-live-search="true" data-size="5" data-width="10%" title="Mode" onchange="ModeSelector(this)">
+            <option value="Global">Global</option>
+            <option value="Comparison">Comparison</option>
+        </select>
         <select class="selectpicker" id="SalesType" data-live-search="true" data-size="5" data-width="12.5%"
                 title="Sales" onchange="SaleTypeSelector(this)">
             <option value="Global_Sales">Global Sales</option>
@@ -39,6 +43,7 @@
         <select class="selectpicker" id="AttributeValue" data-live-search="true" data-size="5" data-width="20%"
                 title="Attribute Value" multiple onchange="AttributeValueSelector(this)">
         </select>
+        <input type="button" class="btn" style="width: 7%" value="show" onclick="click_button()">
     </div>
     <div class="bubble"></div>
     <div class="stack-grouped-bar">
@@ -61,8 +66,12 @@
     <div class="slider">
         <input class="range-slider" type="hidden" value="1960,2020" style="margin: 0 auto; text-align: center;">
     </div>
+    <div class="selectData">
+        <svg></svg>
+    </div>
 </div>
 <script src="js/data.js"></script>
+<script src="js/selected-data-frame.js"></script>
 <script src="js/TimeSlider.js"></script>
 <script src="js/stack-grouped-bars.js"></script>
 <script src="js/scatter.js"></script>

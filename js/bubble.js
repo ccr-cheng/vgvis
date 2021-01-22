@@ -9,6 +9,7 @@ function draw_bubble(max_node = 800) {
         top: .02 * height, bottom: .12 * height,
         left: .05 * width, right: .05 * width
     };
+    let select_color = 'rgba(60, 60, 60, 0.7)';
     let x_interp = d3.interpolate(padding.left, width - padding.right);
     let get_x = year => {
         return x_interp((year - year_range[0]) / (year_range[1] - year_range[0]))
@@ -18,6 +19,7 @@ function draw_bubble(max_node = 800) {
         d.r = size_scale * Math.sqrt(+d[cur_sale]);
         d.x = get_x(d['Year']);
         d.y = height * 0.4 + height * 0.1 * Math.random();
+        if(d.click_time == undefined) d.click_time = 0;
         return d;
     };
 
@@ -61,7 +63,7 @@ function draw_bubble(max_node = 800) {
         .selectAll('circle')
         .data(nodes)
         .join('circle')
-        .style('fill', d => d3.interpolateSpectral((d['Year'] - 1980) / (2016 - 1980)))
+        .attr('fill', d => d3.interpolateSpectral((d['Year'] - 1980) / (2016 - 1980)))
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
         .attr('r', d => d.r)
@@ -82,6 +84,27 @@ function draw_bubble(max_node = 800) {
                 .style('left', (d.x/* + _width / 3*/ + 10 + 'px'))
                 .style('top', (d.y + 10) + 'px')
                 .style('visibility', 'visible');
+        })
+        .on('click', function (e, d) {
+            if(d.click_time == 0) {
+                d3.select(this).attr('fill', select_color);
+                d.click_time = 1;
+                select_data.Game_data.push(d);
+                choose_action = 1;
+                for(let cb of attr_value_cb)
+                    cb();
+                choose_action = 0;
+            }
+            else {
+                d3.select(this).attr('fill', d => d3.interpolateSpectral((d['Year'] - 1980) / (2016 - 1980)));
+                d.click_time = 0;
+                select_data.Game_data.splice(select_data.Game_data.indexOf(d), 1);
+                choose_action = 1;
+                for(let cb of attr_value_cb)
+                    cb();
+                choose_action = 0;
+            }
+            update_frame();
         })
         .on('mouseout', () => {
             // remove tooltip
@@ -124,7 +147,7 @@ function draw_bubble(max_node = 800) {
         // update nodes
         node = node.data(nodes)
             .join('circle')
-            .style('fill', d => d3.interpolateSpectral((d['Year'] - 1980) / (2016 - 1980)))
+            .style('fill', d => d.click_time == 0 ? d3.interpolateSpectral((d['Year'] - 1980) / (2016 - 1980)) : select_color)
             .attr('cx', d => d.x)
             .attr('cy', d => d.y)
             .attr('r', d => d.r)

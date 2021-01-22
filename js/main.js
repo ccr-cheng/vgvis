@@ -1,12 +1,14 @@
 const _width = $(window).width();
 const _height = $(window).height();
 let year_range = [1980, 2016];
+let cur_mode = 'Global';
 let cur_sale = 'Global_Sales';
 let cur_attribute_type = 'none';
 let cur_attribute_value = new Set();
 let year_cb = [];
 let sale_type_cb = [];
 let attr_value_cb = [];
+let choose_action = 0;
 let filter_year = d => +d['Year'] >= year_range[0] && +d['Year'] <= year_range[1];
 let filter_attr = d => {
     if (cur_attribute_type === 'none') return true;
@@ -52,8 +54,8 @@ function main() {
             sale_type_cb.push(pie_sale_cb);
             attr_value_cb.push(pie_attr_cb);
         }
-        let bar_refresh = draw_SGB();
-        attr_value_cb.push(bar_refresh);
+        let [stack_attr_cb, stack_comp_cb] = draw_SGB();
+        attr_value_cb.push(stack_attr_cb);
         let [bubble_year_cb, bubble_sale_cb, bubble_attr_cb] = draw_bubble();
         year_cb.push(bubble_year_cb);
         sale_type_cb.push(bubble_sale_cb);

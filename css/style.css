@@ -206,3 +206,29 @@ input {
     color: #002752;
     font-family: "Lucida Console", "Courier New", monospace;
 }
+
+.selectData {
+    padding: 5px 5px 5px 5px;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 20%;
+    height: 80%;
+    position: fixed;
+    top: 10%;
+    right: 1%;
+    z-index: 10;
+    opacity: 1;
+    border-radius: 10px;
+    margin: 0 auto;
+    /*transition: 0.3s;*/
+    display: none;
+    justify-content: left;
+    align-items: center;
+    /*animation: opacityChange 1s;*/
+    /*-webkit-animation: opacityChange 1s;*/
+    /*animation-fill-mode: forwards;*/
+    /*-webkit-animation-fill-mode: forwards;*/
+}
+
+/*.selectData:hover {*/
+/*    background: rgba(255, 255, 255, 0.7);*/
+/*}*/
