@@ -223,7 +223,10 @@ function draw_pie(attr) {
         //data update
         cur_sales = cur_sale;
         list = [];
-        data = vgdata.aggregate(attr, filter_all);
+        if(cur_mode == 'Global')
+            data = vgdata.aggregate(attr, filter_all);
+        else
+            data = select_data.aggregate(attr, filter_attr);
         if (attr == 'Year'){
             for (let i = 1980; i <= 2016; i++)
                 list.push(i.toString());
