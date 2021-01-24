@@ -4,7 +4,7 @@
 let bar_layout = 'grouped';
 
 function draw_SGB() {
-    let width = _width, height = _height * 0.8;
+    let width = _width, height = _height * 1.;
     let last_mode = cur_mode;
     let last_bar_layout = $("input:radio:checked").val();
     let svg = d3.select('.stack-grouped-bar')
@@ -14,7 +14,7 @@ function draw_SGB() {
         .attr('y', -height / 2);
     let keys_alphabet = ['EU_Sales', 'JP_Sales', 'NA_Sales', 'Other_Sales'];
     let padding = {
-        top: 0, bottom: .12 * height,
+        top: 0, bottom: .3 * height,
         left: .05 * width, right: .1 * width
     };
     let name_list = [];

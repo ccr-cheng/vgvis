@@ -19,7 +19,7 @@ function draw_bubble(max_node = 800) {
         d.r = size_scale * Math.sqrt(+d[cur_sale]);
         d.x = get_x(d['Year']);
         d.y = height * 0.4 + height * 0.1 * Math.random();
-        if(d.click_time == undefined) d.click_time = 0;
+        if (d.click_time == undefined) d.click_time = 0;
         return d;
     };
 
@@ -91,16 +91,15 @@ function draw_bubble(max_node = 800) {
                 d.click_time = 1;
                 select_data.Game_data.push(d);
                 choose_action = 1;
-                for(let cb of attr_value_cb)
+                for (let cb of attr_value_cb)
                     cb();
                 choose_action = 0;
-            }
-            else {
+            } else {
                 d3.select(this).attr('fill', d => d3.interpolateSpectral((d['Year'] - 1980) / (2016 - 1980)));
                 d.click_time = 0;
                 select_data.Game_data.splice(select_data.Game_data.indexOf(d), 1);
                 choose_action = 1;
-                for(let cb of attr_value_cb)
+                for (let cb of attr_value_cb)
                     cb();
                 choose_action = 0;
             }
@@ -170,21 +169,20 @@ function draw_bubble(max_node = 800) {
                     .style('visibility', 'visible');
             })
             .on('click', function (e, d) {
-                if(d.click_time == 0) {
+                if (d.click_time == 0) {
                     d3.select(this).attr('fill', select_color);
                     d.click_time = 1;
                     select_data.Game_data.push(d);
                     choose_action = 1;
-                    for(let cb of attr_value_cb)
+                    for (let cb of attr_value_cb)
                         cb();
                     choose_action = 0;
-                }
-                else {
+                } else {
                     d3.select(this).attr('fill', d => d3.interpolateSpectral((d['Year'] - 1980) / (2016 - 1980)));
                     d.click_time = 0;
                     select_data.Game_data.splice(select_data.Game_data.indexOf(d), 1);
                     choose_action = 1;
-                    for(let cb of attr_value_cb)
+                    for (let cb of attr_value_cb)
                         cb();
                     choose_action = 0;
                 }

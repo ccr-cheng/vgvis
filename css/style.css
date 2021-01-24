@@ -223,6 +223,8 @@ input {
     display: none;
     justify-content: left;
     align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
     /*animation: opacityChange 1s;*/
     /*-webkit-animation: opacityChange 1s;*/
     /*animation-fill-mode: forwards;*/
